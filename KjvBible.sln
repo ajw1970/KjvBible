@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{1346FF34-AF59-4E88-B5BF-64C7451B0016}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KjvBibleOsis", "KjvBibleOsis\KjvBibleOsis.csproj", "{6E6DA088-DA70-4313-8D1F-88E305B37B69}"
@@ -10,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleModel", "BibleModel\BibleModel.csproj", "{15C52B9C-29E4-4900-833E-BEC6A70A9A0E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordXml", "WordXml\WordXml.csproj", "{46025228-FB40-4326-B281-9D2AD68721A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleReader.Test", "BibleReader.Test\BibleReader.Test.csproj", "{B4D305FB-2A85-497B-915C-83B8E2560021}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +75,16 @@ Global
 		{46025228-FB40-4326-B281-9D2AD68721A1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{46025228-FB40-4326-B281-9D2AD68721A1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{46025228-FB40-4326-B281-9D2AD68721A1}.Release|x86.ActiveCfg = Release|Any CPU
+		{B4D305FB-2A85-497B-915C-83B8E2560021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4D305FB-2A85-497B-915C-83B8E2560021}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4D305FB-2A85-497B-915C-83B8E2560021}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B4D305FB-2A85-497B-915C-83B8E2560021}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B4D305FB-2A85-497B-915C-83B8E2560021}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B4D305FB-2A85-497B-915C-83B8E2560021}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4D305FB-2A85-497B-915C-83B8E2560021}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4D305FB-2A85-497B-915C-83B8E2560021}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B4D305FB-2A85-497B-915C-83B8E2560021}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B4D305FB-2A85-497B-915C-83B8E2560021}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
