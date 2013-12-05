@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Collections;
@@ -7,6 +8,14 @@ using KjvBible;
 
 namespace BibleReader.Test
 {
+    public class BookHeader
+    {
+        public string Name { get; set; }
+        public string LongName { get; set; }
+        public string AbbreviatedName { get; set; }
+        public int ChapterCount { get; set; }
+    }
+
     [TestClass]
     public class UnitTests
     {
@@ -16,8 +25,8 @@ namespace BibleReader.Test
         public void Init()
         {
             var bible = Service.GetBible();
-            var books = new List<Book>(bible.BookGroups[0].Books);
-            books.AddRange(bible.BookGroups[1].Books);
+            books = new List<Book>(bible.BookGroups[0].Books);
+            books.AddRange(bible.BookGroups[2].Books);
         }
 
         [TestMethod]
@@ -27,19 +36,23 @@ namespace BibleReader.Test
         }
 
         [TestMethod]
-        public void BibleReaderIsSingleton()
+        public void CanSearchForRangeOfBooks()
         {
-            var bibleReader = BibleReader.Instance;
-            Assert.IsNotNull(bibleReader);
-
-            var bibleReader2 = BibleReader.Instance;
-            Assert.AreSame(bibleReader, bibleReader2);
+            var bookTitles = from b in books
+                             select new BookHeader {
+                                Name = b.Name,
+                                LongName = b.LongName,
+                                AbbreviatedName = b.AbbreviatedName,
+                                ChapterCount = b.Chapters.Count,
+                             };
+            var searchedTitles = BibleReader.SearchBooks("Gen-Deut", bookTitles);
+            Assert.AreEqual(5, searchedTitles.Count);
         }
 
         [TestMethod]
         public void BibleReaderReturnsCurrentBookChapterVerse()
         {
-            var bibleReader = BibleReader.Instance;
+            var bibleReader = new BibleReader();
             Assert.AreEqual("Genesis 1:1", bibleReader.Current, "CurrentReturnsCurrentBookChapterVerse");
 
             Assert.AreEqual("John 1:1", bibleReader.Next, "NextReturnsNextBookChapterVerse");
@@ -71,20 +84,7 @@ namespace BibleReader.Test
         private List<ReadingList> readingLists;
         private int currentIndex;
 
-        private static BibleReader bibleReader;
-        public static BibleReader Instance
-        {
-            get
-            {
-                if (bibleReader == null)
-                {
-                    bibleReader = new BibleReader();
-                }
-                return bibleReader;
-            }
-        }
-
-        private BibleReader()
+        public BibleReader()
         {
             readingLists = new List<ReadingList> {
                 new ReadingList{
@@ -100,6 +100,41 @@ namespace BibleReader.Test
                     "John 3:1"
                 }},
             };
+        }
+
+        public static List<string> SearchBooks(string searchFor, IEnumerable<BookHeader> bookTitles)
+        {
+            var searchTerms = new List<string>(searchFor.Split(';'));
+            var retList = new List<string>();
+            foreach (var term in searchTerms)
+            {
+                if (term.Contains('-'))
+                {
+                    var foundRange = new List<string>();
+                    var inRange = false;
+                    var range = term.Split('-');
+                    foreach (var title in bookTitles)
+                    {
+                        if (!inRange && (title.Name.StartsWith(range[0]) || title.AbbreviatedName.StartsWith(range[0])))
+                        {
+                            foundRange.Add(title.Name);
+                            inRange = true;
+                        } else if (title.Name.StartsWith(range[1]) || title.AbbreviatedName.StartsWith(range[1]))
+                        {
+                            foundRange.Add(title.Name);
+                            break;
+                        } else if (inRange)
+                        {
+                            foundRange.Add(title.LongName);
+                        }
+                    }
+                    if (foundRange.Any())
+                    {
+                        retList.AddRange(foundRange);
+                    }
+                }
+            }
+            return retList;
         }
 
         public string Current
