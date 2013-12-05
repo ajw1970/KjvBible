@@ -50,8 +50,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="UnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BibleModel\BibleModel.csproj">
+      <Project>{15c52b9c-29e4-4900-833e-bec6a70a9a0e}</Project>
+      <Name>BibleModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KjvBible\KjvBible.csproj">
+      <Project>{ef59da71-4adb-41f4-8e77-aa9d1bbfa123}</Project>
+      <Name>KjvBible</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

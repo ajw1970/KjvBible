@@ -23,7 +23,7 @@ namespace KjvBible.Osis
             bible.BookGroups.Add(new BookGroup() { Name = "Apocrypha" });
             bible.BookGroups.Add(new BookGroup() { Name = "New Testament" });
 
-            var doc = XDocument.Load(@"D:\VS Projects\Personal\KjvBible\Data\kjv.osis.xml");
+            var doc = XDocument.Load(@"C:\VS Projects\Personal\KjvBible\Data\kjv.osis.xml");
 
             //var divs = from b in doc.Descendants("div")
             //            where b.Attribute("type").Value == "book"
