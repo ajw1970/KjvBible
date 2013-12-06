@@ -6,8 +6,8 @@
     <ProjectGuid>{B4D305FB-2A85-497B-915C-83B8E2560021}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BibleReader.Test</RootNamespace>
-    <AssemblyName>BibleReader.Test</AssemblyName>
+    <RootNamespace>BibleReader.Tests</RootNamespace>
+    <AssemblyName>BibleReader.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -57,6 +57,10 @@
     <ProjectReference Include="..\BibleModel\BibleModel.csproj">
       <Project>{15c52b9c-29e4-4900-833e-bec6a70a9a0e}</Project>
       <Name>BibleModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BibleReader\BibleReader.csproj">
+      <Project>{cc5a77d9-d56b-49dd-9f7a-0724f750174c}</Project>
+      <Name>BibleReader</Name>
     </ProjectReference>
     <ProjectReference Include="..\KjvBible\KjvBible.csproj">
       <Project>{ef59da71-4adb-41f4-8e77-aa9d1bbfa123}</Project>
