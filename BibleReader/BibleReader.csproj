@@ -39,9 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BibleReader.cs" />
+    <Compile Include="Reader.cs" />
+    <Compile Include="ReadingChapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadingList.cs" />
+    <Compile Include="ReadingVerse.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BibleModel\BibleModel.csproj">

@@ -9,7 +9,8 @@ namespace BibleReader
 {
     public class ReadingList
     {
+        public string Name { get; set; }
+        public List<ReadingChapterHeader> ReadingChapters { get; set; }
         public int currentIndex { get; set; }
-        public List<string> ReadingItems { get; set; }
     }
 }

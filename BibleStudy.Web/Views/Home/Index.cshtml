@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div ng-app="app">
+    <div ng-controller="BibleStudyCtrl">
+        <div class="row">
+            <ol class="list-unstyled">
+                <li ng-repeat="chapter in chapters">
+                    {{chapter.name}}
+                    <ol start="1">
+                        <li ng-repeat="verse in chapter.verses">{{verse.text}}</li>
+                    </ol>
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-resource.min.js"></script>
+    <script src="~/AppScripts/app.js"></script>
+}

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Collections;
 using BibleModel;
 using KjvBible;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace BibleReader.Tests
 {
@@ -30,7 +32,7 @@ namespace BibleReader.Tests
         [TestMethod]
         public void CanAddReadingListsByRange()
         {
-            var reader = new BibleReader(books);
+            var reader = new Reader(books);
             var list1 = reader.AddReadingList("Gen", "Deut", "Ex", 7);
             Assert.AreEqual(5, list1.Count);
             Assert.AreEqual(50, list1[0].Chapters.Count);
@@ -41,7 +43,7 @@ namespace BibleReader.Tests
             Assert.AreEqual(1, reader.ReadingLists.Count);
             var chapterCount = list1.Sum(c => c.Chapters.Count);
             Assert.AreEqual(187, chapterCount);
-            Assert.AreEqual(chapterCount, reader.ReadingLists.First().ReadingItems.Count);
+            Assert.AreEqual(chapterCount, reader.ReadingLists.First().ReadingChapters.Count);
 
             var bookLists = new List<Book>(list1);
 
@@ -57,7 +59,7 @@ namespace BibleReader.Tests
             Assert.AreEqual(1, list4.Count);
             bookLists.AddRange(list4);
 
-            var list5 = reader.AddReadingList("Prov", "Song", "Prov",  22);
+            var list5 = reader.AddReadingList("Prov", "Song", "Prov", 22);
             Assert.AreEqual(3, list5.Count);
             bookLists.AddRange(list5);
 
@@ -85,36 +87,59 @@ namespace BibleReader.Tests
 
             reader.SetCurrentListIndex(8);
 
-            Assert.AreEqual("1 Corinthians 5", reader.Current);
-            Assert.AreEqual("2 Timothy 3", reader.Next);
-            Assert.AreEqual("Exodus 7", reader.Next);
-            Assert.AreEqual("Judges 19", reader.Next);
+            Assert.AreEqual("1 Corinthians 5", reader.CurrentChapterHeader.ToString());
+            Assert.AreEqual("2 Timothy 3", reader.NextChapterHeader.ToString());
+            Assert.AreEqual("Exodus 7", reader.NextChapterHeader.ToString());
+            Assert.AreEqual("Judges 19", reader.NextChapterHeader.ToString());
+
+            using(var tr = new StreamWriter("readinglists.json"))
+            {
+                tr.Write(JsonConvert.SerializeObject(reader.ReadingLists));
+            }
         }
 
         [TestMethod]
         public void BibleReaderReturnsCurrentBookChapterVerse()
         {
-            var bibleReader = new BibleReader(books, new List<ReadingList>
+            var bibleReader = new Reader(books, new List<ReadingList>
             {
-                new ReadingList { ReadingItems = new List<string> { "Genesis 1", "Genesis 2", "Genesis 3" }},
-                new ReadingList { ReadingItems = new List<string> { "John 1", "John 2", "John 3" }},
+                new ReadingList 
+                { 
+                    Name = "Genesis",
+                    ReadingChapters = new List<ReadingChapterHeader> 
+                    { 
+                        new ReadingChapterHeader { BookName = "Genesis", Number= 1 },
+                        new ReadingChapterHeader { BookName = "Genesis", Number = 2}, 
+                        new ReadingChapterHeader { BookName = "Genesis", Number = 3 },
+                    }
+                },
+                new ReadingList 
+                { 
+                    Name = "John",
+                    ReadingChapters = new List<ReadingChapterHeader> 
+                    { 
+                        new ReadingChapterHeader { BookName = "John", Number = 1 }, 
+                        new ReadingChapterHeader { BookName = "John", Number = 2}, 
+                        new ReadingChapterHeader { BookName = "John", Number = 3 },
+                    },
+                }
             });
-            Assert.AreEqual("Genesis 1", bibleReader.Current, "CurrentReturnsCurrentBookChapterVerse");
+            Assert.AreEqual("Genesis 1", bibleReader.CurrentChapterHeader.ToString(), "CurrentReturnsCurrentBookChapterVerse");
 
-            Assert.AreEqual("John 1", bibleReader.Next, "NextReturnsNextBookChapterVerse");
+            Assert.AreEqual("John 1", bibleReader.NextChapterHeader.ToString(), "NextReturnsNextBookChapterVerse");
 
-            Assert.AreEqual("John 1", bibleReader.Current, "CurrentAfterNextReturnsLastBookChapterVerse");
+            Assert.AreEqual("John 1", bibleReader.CurrentChapterHeader.ToString(), "CurrentAfterNextReturnsLastBookChapterVerse");
 
-            Assert.AreEqual("Genesis 2", bibleReader.Next, "NextReturnsNextBookChapterVerse");
+            Assert.AreEqual("Genesis 2", bibleReader.NextChapterHeader.ToString(), "NextReturnsNextBookChapterVerse");
 
-            Assert.AreEqual("John 2", bibleReader.Next, "NextReturnsNextBookChapterVerse");
+            Assert.AreEqual("John 2", bibleReader.NextChapterHeader.ToString(), "NextReturnsNextBookChapterVerse");
 
-            Assert.AreEqual("Genesis 3", bibleReader.Next, "NextReturnsNextBookChapterVerse");
+            Assert.AreEqual("Genesis 3", bibleReader.NextChapterHeader.ToString(), "NextReturnsNextBookChapterVerse");
 
-            Assert.AreEqual("John 3", bibleReader.Next, "NextReturnsNextBookChapterVerse");
+            Assert.AreEqual("John 3", bibleReader.NextChapterHeader.ToString(), "NextReturnsNextBookChapterVerse");
 
-            Assert.AreEqual("Genesis 1", bibleReader.Next, "NextReturnsNextBookChapterVerse");
-            Assert.AreEqual("John 1", bibleReader.Next, "NextReturnsNextBookChapterVerse");
+            Assert.AreEqual("Genesis 1", bibleReader.NextChapterHeader.ToString(), "NextReturnsNextBookChapterVerse");
+            Assert.AreEqual("John 1", bibleReader.NextChapterHeader.ToString(), "NextReturnsNextBookChapterVerse");
         }
 
     }
