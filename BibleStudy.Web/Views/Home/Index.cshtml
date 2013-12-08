@@ -6,13 +6,13 @@
     <div ng-controller="BibleStudyCtrl">
         <div class="row">
             <ol class="list-unstyled">
-                <li ng-repeat="chapter in chapters">
-                    {{chapter.name}}
+                <li ng-repeat="chapter in chapters"><strong>{{chapter.bookName}} {{chapter.number}}</strong>
                     <ol start="1">
                         <li ng-repeat="verse in chapter.verses">{{verse.text}}</li>
                     </ol>
                 </li>
             </ol>
+            <button class="btn btn-default" ng-click="next()">Next in Queue</button>
         </div>
     </div>
 </div>

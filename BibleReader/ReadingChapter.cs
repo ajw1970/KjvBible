@@ -17,4 +17,9 @@ namespace BibleReader
             return String.Format("{0} {1}", BookName, Number);
         }
     }
+
+    public class ReadingChapter : ReadingChapterHeader
+    {
+        public List<ReadingVerse> Verses { get; set; }
+    }
 }

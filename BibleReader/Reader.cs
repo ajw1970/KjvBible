@@ -95,7 +95,7 @@ namespace BibleReader
                                       select c).FirstOrDefault();
                 readingLists.Add(new ReadingList
                 {
-                    Name = String.Format("{0}-{1}",firstBookname, lastBookname),
+                    Name = String.Format("{0}-{1}", firstBookname, lastBookname),
                     ReadingChapters = range,
                     currentIndex = range.IndexOf(currentChapter),
                 });
@@ -113,6 +113,30 @@ namespace BibleReader
             }
         }
 
+        public ReadingChapter CurrentChapter
+        {
+            get
+            {
+                var current = currentReadingListItem;
+                var verses = (from b in books
+                              where b.Name == current.BookName
+                              from c in b.Chapters
+                              where c.Number == current.Number
+                              from v in c.Verses
+                              select new ReadingVerse
+                              {
+                                  Number = v.Number,
+                                  Text = v.Text,
+                              }).ToList();
+
+                return new ReadingChapter
+                {
+                    BookName = current.BookName,
+                    Number = current.Number,
+                    Verses = verses,
+                };
+            }
+        }
 
         public ReadingChapterHeader NextChapterHeader
         {
