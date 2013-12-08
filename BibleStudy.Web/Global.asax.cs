@@ -13,6 +13,7 @@ namespace BibleStudy.Web
     {
         protected void Application_Start()
         {
+            var bibleStudyManager = BibleStudyManager.Instance;
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

@@ -8,12 +8,11 @@ app.factory("Chapters", function ($resource) {
 
 app.controller("BibleStudyCtrl", function ($scope, Chapters) {
     $scope.chapters = Chapters.query();
-    $scope.showResults = false;
     $scope.next = function () {
         console.log("User clicked next");
-        Chapters.get({ id: $scope.enteredPartNo }, function (data) {
-            $scope.part = data;
-            $scope.showResults = true;
+        var chapter = $scope.chapters[0];
+        Chapters.get({ id: { bookName: chapter.bookName, number: chapter.number } }, function (data) {
+            $scope.chapters.push(data);
         });
     };
 });

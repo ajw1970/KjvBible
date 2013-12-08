@@ -520,13 +520,9 @@
       <Project>{15c52b9c-29e4-4900-833e-bec6a70a9a0e}</Project>
       <Name>BibleModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BibleReader\BibleReader.csproj">
-      <Project>{cc5a77d9-d56b-49dd-9f7a-0724f750174c}</Project>
-      <Name>BibleReader</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KjvBible\KjvBible.csproj">
-      <Project>{ef59da71-4adb-41f4-8e77-aa9d1bbfa123}</Project>
-      <Name>KjvBible</Name>
+    <ProjectReference Include="..\BibleStudy\BibleStudy.csproj">
+      <Project>{4ec4a812-d445-4358-8995-1d7ff6928b12}</Project>
+      <Name>BibleStudy</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -117,25 +117,29 @@ namespace BibleReader
         {
             get
             {
-                var current = currentReadingListItem;
-                var verses = (from b in books
-                              where b.Name == current.BookName
-                              from c in b.Chapters
-                              where c.Number == current.Number
-                              from v in c.Verses
-                              select new ReadingVerse
-                              {
-                                  Number = v.Number,
-                                  Text = v.Text,
-                              }).ToList();
-
-                return new ReadingChapter
-                {
-                    BookName = current.BookName,
-                    Number = current.Number,
-                    Verses = verses,
-                };
+                return ConvertHeaderToChapter(currentReadingListItem); 
             }
+        }
+
+        private ReadingChapter ConvertHeaderToChapter(ReadingChapterHeader header)
+        {
+            var verses = (from b in books
+                          where b.Name == header.BookName
+                          from c in b.Chapters
+                          where c.Number == header.Number
+                          from v in c.Verses
+                          select new ReadingVerse
+                          {
+                              Number = v.Number,
+                              Text = v.Text,
+                          }).ToList();
+
+            return new ReadingChapter
+            {
+                BookName = header.BookName,
+                Number = header.Number,
+                Verses = verses,
+            };
         }
 
         public ReadingChapterHeader NextChapterHeader
@@ -161,6 +165,14 @@ namespace BibleReader
                 }
 
                 return currentReadingListItem;
+            }
+        }
+
+        public ReadingChapter NextChapter
+        {
+            get
+            {
+                return ConvertHeaderToChapter(NextChapterHeader);
             }
         }
 
