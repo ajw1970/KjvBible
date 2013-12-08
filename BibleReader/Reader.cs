@@ -113,35 +113,6 @@ namespace BibleReader
             }
         }
 
-        public ReadingChapter CurrentChapter
-        {
-            get
-            {
-                return ConvertHeaderToChapter(currentReadingListItem); 
-            }
-        }
-
-        private ReadingChapter ConvertHeaderToChapter(ReadingChapterHeader header)
-        {
-            var verses = (from b in books
-                          where b.Name == header.BookName
-                          from c in b.Chapters
-                          where c.Number == header.Number
-                          from v in c.Verses
-                          select new ReadingVerse
-                          {
-                              Number = v.Number,
-                              Text = v.Text,
-                          }).ToList();
-
-            return new ReadingChapter
-            {
-                BookName = header.BookName,
-                Number = header.Number,
-                Verses = verses,
-            };
-        }
-
         public ReadingChapterHeader NextChapterHeader
         {
             get
@@ -165,14 +136,6 @@ namespace BibleReader
                 }
 
                 return currentReadingListItem;
-            }
-        }
-
-        public ReadingChapter NextChapter
-        {
-            get
-            {
-                return ConvertHeaderToChapter(NextChapterHeader);
             }
         }
 

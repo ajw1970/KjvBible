@@ -50,7 +50,7 @@ namespace BibleStudy
         {
             get
             {
-                return reader.CurrentChapter;
+                return ConvertHeaderToChapter(reader.CurrentChapterHeader);
             }
         }
 
@@ -58,8 +58,29 @@ namespace BibleStudy
         {
             get
             {
-                return reader.NextChapter;
+                return ConvertHeaderToChapter(reader.NextChapterHeader);
             }
+        }
+
+        private ReadingChapter ConvertHeaderToChapter(ReadingChapterHeader header)
+        {
+            var verses = (from b in books
+                          where b.Name == header.BookName
+                          from c in b.Chapters
+                          where c.Number == header.Number
+                          from v in c.Verses
+                          select new ReadingVerse
+                          {
+                              Number = v.Number,
+                              Text = v.Text,
+                          }).ToList();
+
+            return new ReadingChapter
+            {
+                BookName = header.BookName,
+                Number = header.Number,
+                Verses = verses,
+            };
         }
     }
 }
