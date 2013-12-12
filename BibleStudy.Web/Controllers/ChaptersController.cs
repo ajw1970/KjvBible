@@ -12,9 +12,9 @@ namespace BibleStudy.Web.Controllers
     {
         BibleStudyManager studyManager;
 
-        public ChaptersController()
+        public ChaptersController(BibleStudyManager studyManager)
         {
-            studyManager = BibleStudyManager.Instance;
+            this.studyManager = studyManager;
         }
         // GET api/chapters
         [Route("api/chapters/")]
@@ -26,7 +26,7 @@ namespace BibleStudy.Web.Controllers
         [Route("api/chapters/{id}")]
         public ReadingChapter Get(ReadingChapterHeader id)
         {
-            return studyManager.NextChapter;
+            return studyManager.GetNextChapter();
         }
 
         // POST api/chapters

@@ -7,24 +7,54 @@ using System.Threading.Tasks;
 
 namespace BibleReader
 {
+    public class ReadingLists
+    {
+        public int CurrentIndex;
+        public List<ReadingList> Lists;
+        public int Count
+        {
+            get
+            {
+                return Lists.Count;
+            }
+        }
+        public void AddList(ReadingList list)
+        {
+            Lists.Add(list);
+        }
+
+        public ReadingLists()
+        {
+            Lists = new List<ReadingList>();
+        }
+    }
+
     public class Reader
     {
-        private List<ReadingList> readingLists;
-        private int currentIndex;
+        private ReadingLists readingLists;
         private List<BookData> books;
+        private Accessor accessor;
+        private string userId;
 
-        public Reader(List<BookData> books, List<ReadingList> readingLists)
+        public Reader(List<BookData> books, Accessor accessor, string userId)
         {
             this.books = books;
-            this.readingLists = readingLists;
+            this.accessor = accessor;
+            this.userId = userId;
+            loadLists();
         }
 
-        public Reader(List<BookData> books)
-            : this(books, new List<ReadingList>())
+        public void SaveLists()
         {
+            accessor.SaveLists(userId, readingLists);
         }
 
-        public List<ReadingList> ReadingLists
+        private void loadLists()
+        {
+            readingLists = accessor.LoadLists(userId);
+        }
+
+        public ReadingLists ReadingLists
         {
             get
             {
@@ -39,7 +69,7 @@ namespace BibleReader
                         select b).FirstOrDefault();
             if (book != null)
             {
-                readingLists.Add(new ReadingList
+                readingLists.AddList(new ReadingList
                 {
                     Name = bookName,
                     ReadingChapters = buildBookChapterList(book),
@@ -54,7 +84,7 @@ namespace BibleReader
         {
             if (readingLists.Count >= index + 1)
             {
-                currentIndex = index;
+                readingLists.CurrentIndex = index;
             }
         }
 
@@ -93,7 +123,7 @@ namespace BibleReader
                 var currentChapter = (from c in range
                                       where c.BookName == currentBook.Name && c.Number == currentChapterNumber
                                       select c).FirstOrDefault();
-                readingLists.Add(new ReadingList
+                readingLists.AddList(new ReadingList
                 {
                     Name = String.Format("{0}-{1}", firstBookname, lastBookname),
                     ReadingChapters = range,
@@ -126,13 +156,13 @@ namespace BibleReader
                     currentReadingList.currentIndex = 0;
                 }
 
-                if (readingLists.Count > currentIndex + 1)
+                if (readingLists.Count > readingLists.CurrentIndex + 1)
                 {
-                    currentIndex++;
+                    readingLists.CurrentIndex++;
                 }
                 else
                 {
-                    currentIndex = 0;
+                    readingLists.CurrentIndex = 0;
                 }
 
                 return currentReadingListItem;
@@ -157,7 +187,7 @@ namespace BibleReader
         {
             get
             {
-                return readingLists[currentIndex];
+                return readingLists.Lists[readingLists.CurrentIndex];
             }
         }
 

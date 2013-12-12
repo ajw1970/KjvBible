@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Newtonsoft.Json.Serialization;
+using BibleStudy.Web.Models;
 
 namespace BibleStudy.Web
 {
@@ -13,6 +14,8 @@ namespace BibleStudy.Web
             // Web API configuration and services
             var settings = config.Formatters.JsonFormatter.SerializerSettings;
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            config.DependencyResolver = new DependencyContainer();
 
             // Web API routes
             config.MapHttpAttributeRoutes();

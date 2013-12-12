@@ -10,10 +10,9 @@ using System.Web.Routing;
 namespace BibleStudy.Web
 {
     public class MvcApplication : System.Web.HttpApplication
-    {
+    { 
         protected void Application_Start()
         {
-            var bibleStudyManager = BibleStudyManager.Instance;
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
