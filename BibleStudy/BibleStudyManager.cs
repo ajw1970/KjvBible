@@ -12,7 +12,7 @@ namespace BibleStudy
     public class BibleStudyManager
     {
         private Binder bible;
-        private List<Book> books;
+        private List<BookData> books;
         private Reader reader;
         private static BibleStudyManager bibleStudyManager;
 
@@ -29,8 +29,7 @@ namespace BibleStudy
         private BibleStudyManager()
         {
             bible = Service.GetBible();
-            books = new List<Book>(bible.BookGroups[0].Books);
-            books.AddRange(bible.BookGroups[2].Books);
+            books = Service.GetCannonizedBookData();
             reader = new Reader(books);
 
             reader.AddReadingList("Gen", "Deut", "Ex", 7);
@@ -64,7 +63,7 @@ namespace BibleStudy
 
         private ReadingChapter ConvertHeaderToChapter(ReadingChapterHeader header)
         {
-            var verses = (from b in books
+            var verses = (from b in bible.Books
                           where b.Name == header.BookName
                           from c in b.Chapters
                           where c.Number == header.Number

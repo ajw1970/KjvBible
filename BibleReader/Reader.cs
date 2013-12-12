@@ -11,15 +11,15 @@ namespace BibleReader
     {
         private List<ReadingList> readingLists;
         private int currentIndex;
-        private List<Book> books;
+        private List<BookData> books;
 
-        public Reader(List<Book> books, List<ReadingList> readingLists)
+        public Reader(List<BookData> books, List<ReadingList> readingLists)
         {
             this.books = books;
             this.readingLists = readingLists;
         }
 
-        public Reader(List<Book> books)
+        public Reader(List<BookData> books)
             : this(books, new List<ReadingList>())
         {
         }
@@ -32,7 +32,7 @@ namespace BibleReader
             }
         }
 
-        public List<Book> AddReadingList(string bookName, int currentChapter)
+        public List<BookData> AddReadingList(string bookName, int currentChapter)
         {
             var book = (from b in books
                         where b.Name.StartsWith(bookName) || b.AbbreviatedName.StartsWith(bookName)
@@ -45,9 +45,9 @@ namespace BibleReader
                     ReadingChapters = buildBookChapterList(book),
                     currentIndex = currentChapter - 1,
                 });
-                return new List<Book> { book };
+                return new List<BookData> { book };
             }
-            return new List<Book>();
+            return new List<BookData>();
         }
 
         public void SetCurrentListIndex(int index)
@@ -58,9 +58,9 @@ namespace BibleReader
             }
         }
 
-        public List<Book> AddReadingList(string firstBookname, string lastBookname, string currentBookname, int currentChapterNumber)
+        public List<BookData> AddReadingList(string firstBookname, string lastBookname, string currentBookname, int currentChapterNumber)
         {
-            var addedBooks = new List<Book>();
+            var addedBooks = new List<BookData>();
             var range = new List<ReadingChapterHeader>();
             var inRange = false;
 
@@ -102,7 +102,7 @@ namespace BibleReader
                 return addedBooks;
             }
 
-            return new List<Book>();
+            return new List<BookData>();
         }
 
         public ReadingChapterHeader CurrentChapterHeader
@@ -139,10 +139,10 @@ namespace BibleReader
             }
         }
 
-        private List<ReadingChapterHeader> buildBookChapterList(Book book)
+        private List<ReadingChapterHeader> buildBookChapterList(BookData book)
         {
             var listing = new List<ReadingChapterHeader>();
-            for (int i = 1; i <= book.Chapters.Count; i++)
+            for (int i = 1; i <= book.ChapterCount; i++)
             {
                 listing.Add(new ReadingChapterHeader
                 {

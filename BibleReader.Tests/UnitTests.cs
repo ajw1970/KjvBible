@@ -13,14 +13,13 @@ namespace BibleReader.Tests
     [TestClass]
     public class UnitTests
     {
-        List<Book> books;
+        List<BookData> books;
 
         [TestInitialize]
         public void Init()
         {
             var bible = Service.GetBible();
-            books = new List<Book>(bible.BookGroups[0].Books);
-            books.AddRange(bible.BookGroups[2].Books);
+            books = Service.GetCannonizedBookData();
         }
 
         [TestMethod]
@@ -35,17 +34,17 @@ namespace BibleReader.Tests
             var reader = new Reader(books);
             var list1 = reader.AddReadingList("Gen", "Deut", "Ex", 7);
             Assert.AreEqual(5, list1.Count);
-            Assert.AreEqual(50, list1[0].Chapters.Count);
-            Assert.AreEqual(40, list1[1].Chapters.Count);
-            Assert.AreEqual(27, list1[2].Chapters.Count);
-            Assert.AreEqual(36, list1[3].Chapters.Count);
-            Assert.AreEqual(34, list1[4].Chapters.Count);
+            Assert.AreEqual(50, list1[0].ChapterCount);
+            Assert.AreEqual(40, list1[1].ChapterCount);
+            Assert.AreEqual(27, list1[2].ChapterCount);
+            Assert.AreEqual(36, list1[3].ChapterCount);
+            Assert.AreEqual(34, list1[4].ChapterCount);
             Assert.AreEqual(1, reader.ReadingLists.Count);
-            var chapterCount = list1.Sum(c => c.Chapters.Count);
+            var chapterCount = list1.Sum(c => c.ChapterCount);
             Assert.AreEqual(187, chapterCount);
             Assert.AreEqual(chapterCount, reader.ReadingLists.First().ReadingChapters.Count);
 
-            var bookLists = new List<Book>(list1);
+            var bookLists = new List<BookData>(list1);
 
             var list2 = reader.AddReadingList("Joshua", "2 Chron", "Judges", 19);
             Assert.AreEqual(9, list2.Count);
