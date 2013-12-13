@@ -7,7 +7,7 @@
     <ProjectGuid>{CC5A77D9-D56B-49DD-9F7A-0724F750174C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BibleReader</RootNamespace>
+    <RootNamespace>BibleStudy</RootNamespace>
     <AssemblyName>BibleReader</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
