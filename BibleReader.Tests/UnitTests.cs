@@ -7,6 +7,7 @@ using BibleModel;
 using KjvBible;
 using Newtonsoft.Json;
 using System.IO;
+using BibleStudy;
 
 namespace BibleReader.Tests
 {

@@ -1,5 +1,4 @@
 ﻿using BibleModel;
-using BibleReader;
 using KjvBible;
 using System;
 using System.Collections.Generic;
