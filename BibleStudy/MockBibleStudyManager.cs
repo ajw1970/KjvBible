@@ -10,9 +10,7 @@ namespace BibleStudy
 {
     public class MockBibleStudyManager : BibleStudyManager
     {
-        private Binder bible;
-        private List<BookData> books;
-        private BibleReader reader;
+        
         private static BibleStudyManager bibleStudyManager;
 
         public static BibleStudyManager Instance
@@ -44,7 +42,7 @@ namespace BibleStudy
             reader.SetCurrentListIndex(8);
         }
 
-        public ReadingChapter CurrentChapter
+        public override ReadingChapter CurrentChapter
         {
             get
             {
@@ -52,7 +50,7 @@ namespace BibleStudy
             }
         }
 
-        public ReadingChapter GetNextChapter()
+        public override ReadingChapter GetNextChapter()
         {
             return ConvertHeaderToChapter(reader.NextChapterHeader);
         }

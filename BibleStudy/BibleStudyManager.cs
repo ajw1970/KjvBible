@@ -1,10 +1,15 @@
 ﻿using BibleModel;
 using System;
+using System.Collections.Generic;
 namespace BibleStudy
 {
-    public interface BibleStudyManager
+    public abstract class BibleStudyManager
     {
-        ReadingChapter CurrentChapter { get; }
-        ReadingChapter GetNextChapter();
+        protected Binder bible;
+        protected List<BookData> books;
+        protected BibleReader reader;
+
+        public abstract ReadingChapter CurrentChapter { get; }
+        public abstract ReadingChapter GetNextChapter();
     }
 }
