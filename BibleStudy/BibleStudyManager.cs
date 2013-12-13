@@ -8,19 +8,46 @@ namespace BibleStudy
 {
     public abstract class BibleStudyManager
     {
-        protected Binder bible;
-        protected List<BookData> books;
+        private Binder bible;
+        private List<BookData> books;
         protected BibleReader reader;
+        protected static BibleStudyManager bibleStudyManager;
+        private string userId;
 
         public abstract ReadingChapter CurrentChapter { get; }
         public abstract ReadingChapter GetNextChapter();
+
+        protected BibleStudyManager()
+        {
+            bible = Service.GetBible();
+            books = Service.GetCannonizedBookData();
+            reader = new BibleReader(books, new ReadingListData());
+        }
+
+        protected ReadingChapter ConvertHeaderToChapter(ReadingChapterHeader header)
+        {
+            var verses = (from b in bible.Books
+                          where b.Name == header.BookName
+                          from c in b.Chapters
+                          where c.Number == header.Number
+                          from v in c.Verses
+                          select new ReadingVerse
+                          {
+                              Number = v.Number,
+                              Text = v.Text,
+                          }).ToList();
+
+            return new ReadingChapter
+            {
+                BookName = header.BookName,
+                Number = header.Number,
+                Verses = verses,
+            };
+        }
     }
 
     public class MockBibleStudyManager : BibleStudyManager
     {
-
-        private static BibleStudyManager bibleStudyManager;
-
         public static BibleStudyManager Instance
         {
             get
@@ -31,12 +58,8 @@ namespace BibleStudy
             }
         }
 
-        private MockBibleStudyManager()
+        private MockBibleStudyManager() 
         {
-            bible = Service.GetBible();
-            books = Service.GetCannonizedBookData();
-            reader = new BibleReader(books, new SaveOnlyFileAccessor(new FileAccessor()), "ajw1970");
-
             reader.AddReadingList("Gen", "Deut", "Ex", 7);
             reader.AddReadingList("Joshua", "2 Chron", "Judges", 19);
             reader.AddReadingList("Ezra", "Job", "Job", 42);
@@ -61,27 +84,6 @@ namespace BibleStudy
         public override ReadingChapter GetNextChapter()
         {
             return ConvertHeaderToChapter(reader.NextChapterHeader);
-        }
-
-        private ReadingChapter ConvertHeaderToChapter(ReadingChapterHeader header)
-        {
-            var verses = (from b in bible.Books
-                          where b.Name == header.BookName
-                          from c in b.Chapters
-                          where c.Number == header.Number
-                          from v in c.Verses
-                          select new ReadingVerse
-                          {
-                              Number = v.Number,
-                              Text = v.Text,
-                          }).ToList();
-
-            return new ReadingChapter
-            {
-                BookName = header.BookName,
-                Number = header.Number,
-                Verses = verses,
-            };
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections;
 using BibleModel;
 using KjvBible;
-using Newtonsoft.Json;
 using System.IO;
 using BibleStudy;
 
@@ -32,7 +31,7 @@ namespace BibleStudy.Tests
         [TestMethod]
         public void CanAddReadingListsByRange()
         {
-            var reader = new BibleReader(books, new SaveOnlyFileAccessor(new FileAccessor()), "ajw1970");
+            var reader = new BibleReader(books, new ReadingListData());
             var list1 = reader.AddReadingList("Gen", "Deut", "Ex", 7);
             Assert.AreEqual(5, list1.Count);
             Assert.AreEqual(50, list1[0].ChapterCount);
@@ -40,10 +39,9 @@ namespace BibleStudy.Tests
             Assert.AreEqual(27, list1[2].ChapterCount);
             Assert.AreEqual(36, list1[3].ChapterCount);
             Assert.AreEqual(34, list1[4].ChapterCount);
-            Assert.AreEqual(1, reader.ReadingLists.Count);
+            Assert.AreEqual(1, reader.ReadingListCount);
             var chapterCount = list1.Sum(c => c.ChapterCount);
             Assert.AreEqual(187, chapterCount);
-            Assert.AreEqual(chapterCount, reader.ReadingLists.Lists.First().ReadingChapters.Count);
 
             var bookLists = new List<BookData>(list1);
 
@@ -87,14 +85,18 @@ namespace BibleStudy.Tests
 
             reader.SetCurrentListIndex(8);
 
-            reader.SaveLists();
-            reader = new BibleReader(books, new FileAccessor(), "ajw1970");
+            var accessor = new FileAccessor();
+            accessor.SaveReadingListData("ajw1970", reader.ReadingListData);
+            var data = accessor.LoadReadingListData("ajw1970");
+            reader = new BibleReader(books, data);
 
             Assert.AreEqual("1 Corinthians 5", reader.CurrentChapterHeader.ToString(), "Pick up after loading from file");
             Assert.AreEqual("2 Timothy 3", reader.NextChapterHeader.ToString());
 
-            reader.SaveLists();
-            reader = new BibleReader(books, new FileAccessor(), "ajw1970");
+            accessor.SaveReadingListData("ajw1970", reader.ReadingListData);
+            data = accessor.LoadReadingListData("ajw1970");
+            reader = null;
+            reader = new BibleReader(books, data);
 
             Assert.AreEqual("Exodus 7", reader.NextChapterHeader.ToString(), "Pick up after loading again");
             Assert.AreEqual("Judges 19", reader.NextChapterHeader.ToString());
@@ -103,7 +105,7 @@ namespace BibleStudy.Tests
         [TestMethod]
         public void BibleReaderReturnsCurrentBookChapterVerse()
         {
-            var bibleReader = new BibleReader(books, new SaveOnlyFileAccessor(new FileAccessor()), "ajw1970");
+            var bibleReader = new BibleReader(books, new ReadingListData());
             bibleReader.AddReadingList("Gen", 1);
             bibleReader.AddReadingList("John", 1);
             bibleReader.AddReadingList("Jude", 1);

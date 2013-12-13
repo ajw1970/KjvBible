@@ -1,28 +1,24 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BibleStudy
 {
     public interface Accessor
     {
-        void SaveLists(string userId, ReadingLists lists);
-        ReadingLists LoadLists(string userId);
+        void SaveReadingListData(string userId, ReadingListData data);
+        ReadingListData LoadReadingListData(string userId);
     }
 
     public class FileAccessor : Accessor
     {
-        public void SaveLists(string userId, ReadingLists lists)
+        public void SaveReadingListData(string userId, ReadingListData data)
         {
             try
             {
-                using (var tr = new StreamWriter(String.Format("{0}-{1}.{2}", userId, "readinglists", "json")))
+                using (var tr = new StreamWriter(String.Format("{0}-{1}.{2}", userId, "ReadingListData", "json")))
                 {
-                    tr.Write(JsonConvert.SerializeObject(lists));
+                    tr.Write(JsonConvert.SerializeObject(data));
                 }
             }
             catch (Exception e)
@@ -31,42 +27,19 @@ namespace BibleStudy
             }
         }
 
-        public ReadingLists LoadLists(string userId)
+        public ReadingListData LoadReadingListData(string userId)
         {
-            var lists = new ReadingLists();
             try
             {
-                using (var tr = new StreamReader(String.Format("{0}-{1}.{2}", userId, "readinglists", "json")))
+                using (var tr = new StreamReader(String.Format("{0}-{1}.{2}", userId, "ReadingListData", "json")))
                 {
-                    var listsJson = tr.ReadToEnd();
-                    lists = JsonConvert.DeserializeObject<ReadingLists>(listsJson);
+                    return JsonConvert.DeserializeObject<ReadingListData>(tr.ReadToEnd());
                 }
             }
             catch (Exception e)
             {
-                //TODO: log error
+                throw e;
             }
-
-            return lists;
-        }
-    }
-
-    public class SaveOnlyFileAccessor : Accessor
-    {
-        private Accessor accessor;
-        public SaveOnlyFileAccessor(Accessor accessor)
-        {
-            this.accessor = accessor;
-        }
-
-        public ReadingLists LoadLists(string userId)
-        {
-            return new ReadingLists();
-        }
-
-        public void SaveLists(string userId, ReadingLists lists)
-        {
-            accessor.SaveLists(userId, lists);
         }
     }
 }

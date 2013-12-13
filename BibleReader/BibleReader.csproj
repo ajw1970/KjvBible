@@ -45,9 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accessor.cs" />
-    <Compile Include="Reader.cs" />
+    <Compile Include="BibleReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadingList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BibleModel\BibleModel.csproj">

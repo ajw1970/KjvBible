@@ -9,34 +9,28 @@ namespace BibleStudy
 {
     public class BibleReader
     {
-        private ReadingLists readingLists;
+        private ReadingListData data;
         private List<BookData> books;
-        private Accessor accessor;
-        private string userId;
 
-        public BibleReader(List<BookData> books, Accessor accessor, string userId)
+        public BibleReader(List<BookData> books, ReadingListData data)
         {
             this.books = books;
-            this.accessor = accessor;
-            this.userId = userId;
-            loadLists();
+            this.data = data;
         }
 
-        public void SaveLists()
-        {
-            accessor.SaveLists(userId, readingLists);
-        }
-
-        private void loadLists()
-        {
-            readingLists = accessor.LoadLists(userId);
-        }
-
-        public ReadingLists ReadingLists
+        public ReadingListData ReadingListData
         {
             get
             {
-                return readingLists;
+                return data;
+            }
+        }
+
+        public int ReadingListCount
+        {
+            get
+            {
+                return data.Lists.Count;
             }
         }
 
@@ -47,11 +41,11 @@ namespace BibleStudy
                         select b).FirstOrDefault();
             if (book != null)
             {
-                readingLists.AddList(new ReadingList
+                data.Lists.Add(new ReadingList
                 {
                     Name = bookName,
                     ReadingChapters = buildBookChapterList(book),
-                    currentIndex = currentChapter - 1,
+                    CurrentChapterIndex = currentChapter - 1,
                 });
                 return new List<BookData> { book };
             }
@@ -60,9 +54,9 @@ namespace BibleStudy
 
         public void SetCurrentListIndex(int index)
         {
-            if (readingLists.Count >= index + 1)
+            if (ReadingListCount >= index + 1)
             {
-                readingLists.CurrentIndex = index;
+                data.CurrentListIndex = index;
             }
         }
 
@@ -101,11 +95,11 @@ namespace BibleStudy
                 var currentChapter = (from c in range
                                       where c.BookName == currentBook.Name && c.Number == currentChapterNumber
                                       select c).FirstOrDefault();
-                readingLists.AddList(new ReadingList
+                data.Lists.Add(new ReadingList
                 {
                     Name = String.Format("{0}-{1}", firstBookname, lastBookname),
                     ReadingChapters = range,
-                    currentIndex = range.IndexOf(currentChapter),
+                    CurrentChapterIndex = range.IndexOf(currentChapter),
                 });
                 return addedBooks;
             }
@@ -125,22 +119,22 @@ namespace BibleStudy
         {
             get
             {
-                if (currentReadingList.ReadingChapters.Count > currentReadingList.currentIndex + 1)
+                if (currentReadingList.ReadingChapters.Count > currentReadingList.CurrentChapterIndex + 1)
                 {
-                    currentReadingList.currentIndex++;
+                    currentReadingList.CurrentChapterIndex++;
                 }
                 else
                 {
-                    currentReadingList.currentIndex = 0;
+                    currentReadingList.CurrentChapterIndex = 0;
                 }
 
-                if (readingLists.Count > readingLists.CurrentIndex + 1)
+                if (ReadingListCount > data.CurrentListIndex + 1)
                 {
-                    readingLists.CurrentIndex++;
+                    data.CurrentListIndex++;
                 }
                 else
                 {
-                    readingLists.CurrentIndex = 0;
+                    data.CurrentListIndex = 0;
                 }
 
                 return currentReadingListItem;
@@ -165,7 +159,7 @@ namespace BibleStudy
         {
             get
             {
-                return readingLists.Lists[readingLists.CurrentIndex];
+                return data.Lists[data.CurrentListIndex];
             }
         }
 
@@ -173,8 +167,26 @@ namespace BibleStudy
         {
             get
             {
-                return currentReadingList.ReadingChapters[currentReadingList.currentIndex];
+                return currentReadingList.ReadingChapters[currentReadingList.CurrentChapterIndex];
             }
         }
+    }
+
+    public class ReadingListData
+    {
+        public int CurrentListIndex { get; set; }
+        public List<ReadingList> Lists { get; set; }
+
+        public ReadingListData()
+        {
+            Lists = new List<ReadingList>();
+        }
+    }
+
+    public class ReadingList
+    {
+        public string Name { get; set; }
+        public List<ReadingChapterHeader> ReadingChapters { get; set; }
+        public int CurrentChapterIndex { get; set; }
     }
 }
