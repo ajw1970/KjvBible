@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace BibleStudy
 {
-    public class Reader
+    public class BibleReader
     {
         private ReadingLists readingLists;
         private List<BookData> books;
         private Accessor accessor;
         private string userId;
 
-        public Reader(List<BookData> books, Accessor accessor, string userId)
+        public BibleReader(List<BookData> books, Accessor accessor, string userId)
         {
             this.books = books;
             this.accessor = accessor;

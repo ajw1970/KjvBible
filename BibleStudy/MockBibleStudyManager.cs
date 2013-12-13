@@ -12,7 +12,7 @@ namespace BibleStudy
     {
         private Binder bible;
         private List<BookData> books;
-        private Reader reader;
+        private BibleReader reader;
         private static BibleStudyManager bibleStudyManager;
 
         public static BibleStudyManager Instance
@@ -29,7 +29,7 @@ namespace BibleStudy
         {
             bible = Service.GetBible();
             books = Service.GetCannonizedBookData();
-            reader = new Reader(books, new SaveOnlyFileAccessor(new FileAccessor()), "ajw1970");
+            reader = new BibleReader(books, new SaveOnlyFileAccessor(new FileAccessor()), "ajw1970");
 
             reader.AddReadingList("Gen", "Deut", "Ex", 7);
             reader.AddReadingList("Joshua", "2 Chron", "Judges", 19);

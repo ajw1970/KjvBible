@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using System.IO;
 using BibleStudy;
 
-namespace BibleReader.Tests
+namespace BibleStudy.Tests
 {
     [TestClass]
     public class UnitTests
@@ -32,7 +32,7 @@ namespace BibleReader.Tests
         [TestMethod]
         public void CanAddReadingListsByRange()
         {
-            var reader = new Reader(books, new SaveOnlyFileAccessor(new FileAccessor()), "ajw1970");
+            var reader = new BibleReader(books, new SaveOnlyFileAccessor(new FileAccessor()), "ajw1970");
             var list1 = reader.AddReadingList("Gen", "Deut", "Ex", 7);
             Assert.AreEqual(5, list1.Count);
             Assert.AreEqual(50, list1[0].ChapterCount);
@@ -88,13 +88,13 @@ namespace BibleReader.Tests
             reader.SetCurrentListIndex(8);
 
             reader.SaveLists();
-            reader = new Reader(books, new FileAccessor(), "ajw1970");
+            reader = new BibleReader(books, new FileAccessor(), "ajw1970");
 
             Assert.AreEqual("1 Corinthians 5", reader.CurrentChapterHeader.ToString(), "Pick up after loading from file");
             Assert.AreEqual("2 Timothy 3", reader.NextChapterHeader.ToString());
 
             reader.SaveLists();
-            reader = new Reader(books, new FileAccessor(), "ajw1970");
+            reader = new BibleReader(books, new FileAccessor(), "ajw1970");
 
             Assert.AreEqual("Exodus 7", reader.NextChapterHeader.ToString(), "Pick up after loading again");
             Assert.AreEqual("Judges 19", reader.NextChapterHeader.ToString());
@@ -103,7 +103,7 @@ namespace BibleReader.Tests
         [TestMethod]
         public void BibleReaderReturnsCurrentBookChapterVerse()
         {
-            var bibleReader = new Reader(books, new SaveOnlyFileAccessor(new FileAccessor()), "ajw1970");
+            var bibleReader = new BibleReader(books, new SaveOnlyFileAccessor(new FileAccessor()), "ajw1970");
             bibleReader.AddReadingList("Gen", 1);
             bibleReader.AddReadingList("John", 1);
             bibleReader.AddReadingList("Jude", 1);
