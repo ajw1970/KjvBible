@@ -39,7 +39,7 @@ namespace BibleStudy.Tests
             Assert.AreEqual(27, list1[2].ChapterCount);
             Assert.AreEqual(36, list1[3].ChapterCount);
             Assert.AreEqual(34, list1[4].ChapterCount);
-            Assert.AreEqual(1, reader.ReadingListCount);
+            Assert.AreEqual(1, reader.ReadingListData.Lists.Count);
             var chapterCount = list1.Sum(c => c.ChapterCount);
             Assert.AreEqual(187, chapterCount);
 

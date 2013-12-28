@@ -26,14 +26,6 @@ namespace BibleStudy
             }
         }
 
-        public int ReadingListCount
-        {
-            get
-            {
-                return data.Lists.Count;
-            }
-        }
-
         public List<BookData> AddReadingList(string bookName, int currentChapter)
         {
             var book = (from b in books
@@ -54,7 +46,7 @@ namespace BibleStudy
 
         public void SetCurrentListIndex(int index)
         {
-            if (ReadingListCount >= index + 1)
+            if (data.Lists.Count >= index + 1)
             {
                 data.CurrentListIndex = index;
             }
@@ -128,7 +120,7 @@ namespace BibleStudy
                     currentReadingList.CurrentChapterIndex = 0;
                 }
 
-                if (ReadingListCount > data.CurrentListIndex + 1)
+                if (data.Lists.Count > data.CurrentListIndex + 1)
                 {
                     data.CurrentListIndex++;
                 }

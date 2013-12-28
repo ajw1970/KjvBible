@@ -11,7 +11,7 @@ namespace BibleStudy.Tests
         {
             BibleStudyManager bibleStudyManager = MockBibleStudyManager.Instance;
             var current = bibleStudyManager.CurrentChapter;
-            Assert.AreEqual("1 Corinthians 5", current.ToString());
+            Assert.AreEqual("Ruth 1", current.ToString());
         }
     }
 }
