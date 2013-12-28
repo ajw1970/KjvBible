@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace BibleStudy
 {
-    class BibleStudyManagerContext : BibleStudyManager
+    public class BibleStudyManagerImp : BibleStudyManager
     {
-        private Accessor accessor;
+        private ReadingListDataAccessor accessor;
 
-        public BibleStudyManagerContext(Accessor accessor)
+        public BibleStudyManagerImp(ReadingListDataAccessor accessor)
         {
             this.accessor = accessor;
         }
@@ -34,8 +34,19 @@ namespace BibleStudy
 
         private BibleReader GetReader(string userName)
         {
-            var data = accessor.LoadReadingListData(userName);
-            return new BibleReader(books, data);
+            try
+            {
+                var data = accessor.LoadReadingListData(userName);
+                return new BibleReader(books, data);
+            }
+            catch (Exception e)
+            {
+                //todo: log error
+                var reader = new BibleReader(books, new ReadingListData());
+                reader.AddReadingList("Gen", "Rev", "Gen", 1);
+                reader.SetCurrentListIndex(0);
+                return reader;
+            }
         }
     }
 }

@@ -4,13 +4,13 @@ using System.IO;
 
 namespace BibleStudy
 {
-    public interface Accessor
+    public interface ReadingListDataAccessor
     {
         void SaveReadingListData(string userId, ReadingListData data);
         ReadingListData LoadReadingListData(string userName);
     }
 
-    public class FileAccessor : Accessor
+    public class ReadingListDataFileAccessor : ReadingListDataAccessor
     {
         public void SaveReadingListData(string userName, ReadingListData data)
         {

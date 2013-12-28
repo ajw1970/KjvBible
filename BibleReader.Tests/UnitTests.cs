@@ -85,18 +85,8 @@ namespace BibleStudy.Tests
 
             reader.SetCurrentListIndex(8);
 
-            var accessor = new FileAccessor();
-            accessor.SaveReadingListData("ajw1970", reader.ReadingListData);
-            var data = accessor.LoadReadingListData("ajw1970");
-            reader = new BibleReader(books, data);
-
             Assert.AreEqual("1 Corinthians 5", reader.CurrentChapterHeader.ToString(), "Pick up after loading from file");
             Assert.AreEqual("2 Timothy 3", reader.NextChapterHeader.ToString());
-
-            accessor.SaveReadingListData("ajw1970", reader.ReadingListData);
-            data = accessor.LoadReadingListData("ajw1970");
-            reader = null;
-            reader = new BibleReader(books, data);
 
             Assert.AreEqual("Exodus 7", reader.NextChapterHeader.ToString(), "Pick up after loading again");
             Assert.AreEqual("Judges 19", reader.NextChapterHeader.ToString());
