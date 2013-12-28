@@ -45,6 +45,7 @@
     <Compile Include="BookGroup.cs" />
     <Compile Include="Chapter.cs" />
     <Compile Include="ReadingChapter.cs" />
+    <Compile Include="ReadingListData.cs" />
     <Compile Include="ReadingVerse.cs" />
     <Compile Include="VerseTextModifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BibleReader.cs" />
-    <Compile Include="ReadingListData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
