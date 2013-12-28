@@ -7,16 +7,16 @@ namespace BibleStudy
     public interface Accessor
     {
         void SaveReadingListData(string userId, ReadingListData data);
-        ReadingListData LoadReadingListData(string userId);
+        ReadingListData LoadReadingListData(string userName);
     }
 
     public class FileAccessor : Accessor
     {
-        public void SaveReadingListData(string userId, ReadingListData data)
+        public void SaveReadingListData(string userName, ReadingListData data)
         {
             try
             {
-                using (var tr = new StreamWriter(String.Format("{0}-{1}.{2}", userId, "ReadingListData", "json")))
+                using (var tr = new StreamWriter(String.Format("{0}-{1}.{2}", userName, "ReadingListData", "json")))
                 {
                     tr.Write(JsonConvert.SerializeObject(data));
                 }
@@ -27,11 +27,11 @@ namespace BibleStudy
             }
         }
 
-        public ReadingListData LoadReadingListData(string userId)
+        public ReadingListData LoadReadingListData(string userName)
         {
             try
             {
-                using (var tr = new StreamReader(String.Format("{0}-{1}.{2}", userId, "ReadingListData", "json")))
+                using (var tr = new StreamReader(String.Format("{0}-{1}.{2}", userName, "ReadingListData", "json")))
                 {
                     return JsonConvert.DeserializeObject<ReadingListData>(tr.ReadToEnd());
                 }

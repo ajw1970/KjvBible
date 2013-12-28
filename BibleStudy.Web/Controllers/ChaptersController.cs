@@ -16,17 +16,18 @@ namespace BibleStudy.Web.Controllers
         {
             this.studyManager = studyManager;
         }
+
         // GET api/chapters
         [Route("api/chapters/")]
         public List<ReadingChapter> Get()
         {
-            return new List<ReadingChapter> { studyManager.CurrentChapter };
+            return new List<ReadingChapter> { studyManager.GetCurrentChapter(this.User.Identity.Name) };
         }
 
         [Route("api/chapters/{id}")]
         public ReadingChapter Get(ReadingChapterHeader id)
         {
-            return studyManager.GetNextChapter();
+            return studyManager.GetNextChapter(this.User.Identity.Name);
         }
 
         // POST api/chapters

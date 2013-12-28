@@ -10,7 +10,7 @@ namespace BibleStudy.Web.Models
     //http://www.asp.net/web-api/overview/extensibility/using-the-web-api-dependency-resolver
     public class DependencyContainer : IDependencyResolver
     {
-        static readonly BibleStudyManager bibleStudyManager = MockBibleStudyManager.Instance;
+        static readonly BibleStudyManager bibleStudyManager = new MockBibleStudyManager();
 
         public IDependencyScope BeginScope()
         {

@@ -11,10 +11,9 @@ namespace BibleStudy
         private Binder bible;
         protected List<BookData> books;
         protected static BibleStudyManager bibleStudyManager;
-        private string userId;
 
-        public abstract ReadingChapter CurrentChapter { get; }
-        public abstract ReadingChapter GetNextChapter();
+        public abstract ReadingChapter GetCurrentChapter(string userName);
+        public abstract ReadingChapter GetNextChapter(string userName);
 
         protected BibleStudyManager()
         {

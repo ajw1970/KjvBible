@@ -10,17 +10,7 @@ namespace BibleStudy
     {
         private BibleReader reader;
 
-        public static BibleStudyManager Instance
-        {
-            get
-            {
-                if (bibleStudyManager == null)
-                    bibleStudyManager = new MockBibleStudyManager();
-                return bibleStudyManager;
-            }
-        }
-
-        private MockBibleStudyManager()
+        public MockBibleStudyManager()
         {
             reader = new BibleReader(books, new ReadingListData());
             reader.AddReadingList("Gen", "Deut", "Ex", 11);
@@ -36,15 +26,12 @@ namespace BibleStudy
             reader.SetCurrentListIndex(1);
         }
 
-        public override ReadingChapter CurrentChapter
+        public override ReadingChapter GetCurrentChapter(string userName)
         {
-            get
-            {
-                return ConvertHeaderToChapter(reader.CurrentChapterHeader);
-            }
+            return ConvertHeaderToChapter(reader.CurrentChapterHeader);
         }
 
-        public override ReadingChapter GetNextChapter()
+        public override ReadingChapter GetNextChapter(string userName)
         {
             return ConvertHeaderToChapter(reader.NextChapterHeader);
         }

@@ -9,8 +9,8 @@ namespace BibleStudy.Tests
         [TestMethod]
         public void CanGetExpectedCurrentChapter()
         {
-            BibleStudyManager bibleStudyManager = MockBibleStudyManager.Instance;
-            var current = bibleStudyManager.CurrentChapter;
+            BibleStudyManager bibleStudyManager = new MockBibleStudyManager();
+            var current = bibleStudyManager.GetCurrentChapter(string.Empty);
             Assert.AreEqual("Ruth 1", current.ToString());
         }
     }
