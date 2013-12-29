@@ -19,7 +19,7 @@ namespace BibleStudy.Tests
         public void Init()
         {
             var bible = Service.GetBible();
-            books = Service.GetCannonizedBookData();
+            books = bible.GetCannonizedBookData();
         }
 
         [TestMethod]

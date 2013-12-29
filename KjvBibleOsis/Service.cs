@@ -18,11 +18,11 @@ namespace KjvBible.Osis
 
         public static Binder GetBible()
         {
-            var fs = new FileStream(@"C:\VS Projects\Personal\KjvBible\Data\kjv.osis.xml", FileMode.Open);
-            return GetBible(fs);
+            var osisXml = File.ReadAllText(@"C:\VS Projects\Personal\KjvBible\Data\kjv.osis.xml");
+            return GetBible(osisXml);
         }
 
-        public static Binder GetBible(Stream stream)
+        public static Binder GetBible(string osisXml)
         {
             Quote quote = null;
             var bible = new Binder();
@@ -30,7 +30,7 @@ namespace KjvBible.Osis
             bible.BookGroups.Add(new BookGroup() { Name = "Apocrypha" });
             bible.BookGroups.Add(new BookGroup() { Name = "New Testament" });
 
-            var doc = XDocument.Load(stream);
+            var doc = XDocument.Parse(osisXml);
 
             //var divs = from b in doc.Descendants("div")
             //            where b.Attribute("type").Value == "book"

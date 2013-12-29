@@ -20,17 +20,24 @@ namespace KjvBible
             return binder;
         }
 
-        public static Binder GetBible(Stream stream)
+        public static Binder GetBible(string osisXml)
         {
             if (binder == null)
-                binder = Osis.Service.GetBible(stream);
+                binder = Osis.Service.GetBible(osisXml);
 
             return binder;
         }
 
-        public static List<BookData> GetCannonizedBookData()
+        private static List<BookData> GetCannonizedBookData()
         {
-            var binder = GetBible();
+            if (binder == null)
+                binder = GetBible();
+
+            return GetCannonizedBookData(binder);
+        }
+
+        public static List<BookData> GetCannonizedBookData(this Binder binder)
+        {
             var books = (getBooks("Old Testament").Union(getBooks("New Testament"))).ToList();
             return getBookData(books);
         }

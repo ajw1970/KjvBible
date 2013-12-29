@@ -1,6 +1,7 @@
 ﻿using BibleModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,10 @@ namespace BibleStudy
     {
         private ReadingListDataAccessor accessor;
 
-        public BibleStudyManagerImp(ReadingListDataAccessor accessor)
+        public BibleStudyManagerImp(ReadingListDataAccessor listDataAccessor, string osisXml)
+            : base(osisXml)
         {
-            this.accessor = accessor;
+            this.accessor = listDataAccessor;
         }
 
         public override ReadingChapter GetCurrentChapter(string userName)

@@ -2,6 +2,7 @@
 using KjvBible;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace BibleStudy
@@ -15,10 +16,16 @@ namespace BibleStudy
         public abstract ReadingChapter GetCurrentChapter(string userName);
         public abstract ReadingChapter GetNextChapter(string userName);
 
+        protected BibleStudyManager(string osisXml)
+        {
+            bible = Service.GetBible(osisXml);
+            books = bible.GetCannonizedBookData();
+        }
+
         protected BibleStudyManager()
         {
             bible = Service.GetBible();
-            books = Service.GetCannonizedBookData();
+            books = bible.GetCannonizedBookData();
         }
 
         protected ReadingChapter ConvertHeaderToChapter(ReadingChapterHeader header)
