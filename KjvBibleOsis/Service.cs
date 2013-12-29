@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using BibleModel;
 using System.Xml;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace KjvBible.Osis
 {
@@ -17,13 +18,19 @@ namespace KjvBible.Osis
 
         public static Binder GetBible()
         {
+            var fs = new FileStream(@"C:\VS Projects\Personal\KjvBible\Data\kjv.osis.xml", FileMode.Open);
+            return GetBible(fs);
+        }
+
+        public static Binder GetBible(Stream stream)
+        {
             Quote quote = null;
             var bible = new Binder();
             bible.BookGroups.Add(new BookGroup() { Name = "Old Testament"});
             bible.BookGroups.Add(new BookGroup() { Name = "Apocrypha" });
             bible.BookGroups.Add(new BookGroup() { Name = "New Testament" });
 
-            var doc = XDocument.Load(@"C:\VS Projects\Personal\KjvBible\Data\kjv.osis.xml");
+            var doc = XDocument.Load(stream);
 
             //var divs = from b in doc.Descendants("div")
             //            where b.Attribute("type").Value == "book"

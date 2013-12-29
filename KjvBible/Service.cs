@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using BibleModel;
+using System.IO;
 
 namespace KjvBible
 {
@@ -15,6 +16,14 @@ namespace KjvBible
         {
             if (binder == null)
                 binder = Osis.Service.GetBible();
+
+            return binder;
+        }
+
+        public static Binder GetBible(Stream stream)
+        {
+            if (binder == null)
+                binder = Osis.Service.GetBible(stream);
 
             return binder;
         }
