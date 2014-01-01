@@ -47,20 +47,20 @@ namespace BibleStudy
                 var reader = new BibleReader(books, new ReadingListData());
 
                 //todo: need to put this back to a sane default. 
-                reader.AddReadingList("Gen", "Rev", "Gen", 1);
-                reader.SetCurrentListIndex(0);
+                //reader.AddReadingList("Gen", "Rev", "Gen", 1);
+                //reader.SetCurrentListIndex(0);
 
-                //reader.AddReadingList("Gen", "Deut", "Ex", 11);
-                //reader.AddReadingList("Joshua", "2 Chron", "Ruth", 1);
-                //reader.AddReadingList("Ezra", "Job", "Ezra", 3);
-                //reader.AddReadingList("Psalm", 47);
-                //reader.AddReadingList("Prov", "Song", "Prov", 25);
-                //reader.AddReadingList("Isaiah", "Daniel", "Jer", 9);
-                //reader.AddReadingList("Hosea", "Malachi", "Micah", 1);
-                //reader.AddReadingList("Matt", "John", "Matt", 7);
-                //reader.AddReadingList("Acts", "2 Cor", "1 Cor", 8);
-                //reader.AddReadingList("Gal", "Rev", "Titus", 3);
-                //reader.SetCurrentListIndex(1);
+                reader.AddReadingList("Gen", "Deut", "Gen", 1);
+                reader.AddReadingList("Joshua", "2 Chron", "Joshua", 1);
+                reader.AddReadingList("Ezra", "Job", "Ezra", 1);
+                reader.AddReadingList("Psalm", 1);
+                reader.AddReadingList("Prov", "Song", "Prov", 1);
+                reader.AddReadingList("Isaiah", "Daniel", "Isaiah", 1);
+                reader.AddReadingList("Hosea", "Malachi", "Hosea", 1);
+                reader.AddReadingList("Matt", "John", "Matt", 1);
+                reader.AddReadingList("Acts", "2 Cor", "Acts", 1);
+                reader.AddReadingList("Gal", "Rev", "Gal", 1);
+                reader.SetCurrentListIndex(0);
 
                 return reader;
             }

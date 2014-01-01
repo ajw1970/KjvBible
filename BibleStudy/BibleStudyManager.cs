@@ -13,8 +13,8 @@ namespace BibleStudy
         protected List<BookData> books;
         protected static BibleStudyManager bibleStudyManager;
 
-        public abstract ReadingChapter GetCurrentChapter(string userName);
-        public abstract ReadingChapter GetNextChapter(string userName);
+        public abstract ReadingChapter GetCurrentChapter(string userId);
+        public abstract ReadingChapter GetNextChapter(string userId);
 
         protected BibleStudyManager(string osisXml)
         {
