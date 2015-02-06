@@ -41,7 +41,7 @@ namespace BibleStudy
                 var data = accessor.LoadReadingListData(userName);
                 return new BibleReader(books, data);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //todo: log error
                 var reader = new BibleReader(books, new ReadingListData());
