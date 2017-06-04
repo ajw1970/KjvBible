@@ -9,21 +9,30 @@ using KjvBible;
 
 namespace ConsoleApplication1
 {
-  class Program
-  {
-    static void Main(string[] args)
+    class Program
     {
-        var bible = KjvBible.Service.GetBible();
-        //foreach (var book in bible)
-        //{
-        //    Console.WriteLine("{0} ({1} Chapters)", book.Name, book.Chapters.Count());
-        //}
-
-        var bibleNotes = WordXml.Service.GetBibleNotes(bible);
-        foreach (var book in bibleNotes.Books)
+        static void Main(string[] args)
         {
-            Console.WriteLine("{0} ({1} Chapters)", book.Name, book.Chapters.Count());
+            var bible = KjvBible.Service.GetBible();
+
+            foreach (var group in bible.BookGroups)
+            {
+                Console.WriteLine($"{group.Name}: {group.Books.Count()} Book(s)");
+            }
+
+            Console.WriteLine();
+            foreach (var book in bible.Books)
+            {
+                Console.WriteLine("{0} {1} ({2} Chapters)", book.Parent.Name, book.Name, book.Chapters.Count());
+            }
+
+            //var bibleNotes = WordXml.Service.GetBibleNotes(bible);
+            //foreach (var book in bibleNotes.Books)
+            //{
+            //    Console.WriteLine("{0} ({1} Chapters)", book.Name, book.Chapters.Count());
+            //}
+
+            Console.Read();
         }
     }
-  }
 }

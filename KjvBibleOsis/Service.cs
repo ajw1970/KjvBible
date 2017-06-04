@@ -121,7 +121,7 @@ namespace KjvBible.Osis
             else
             {
                 bible.BookGroups[2].Books.Add(book);
-                book.Parent = bible.BookGroups[1];
+                book.Parent = bible.BookGroups[2];
             }
         }
 
