@@ -9,9 +9,6 @@ namespace BibleStudy
 {
     public class BibleReader
     {
-        private ReadingListData data;
-        private List<BookData> books;
-
         public BibleReader(List<BookData> books, ReadingListData data)
         {
             this.books = books;
@@ -23,6 +20,14 @@ namespace BibleStudy
             get
             {
                 return data;
+            }
+        }
+
+        public void SetCurrentListIndex(int index)
+        {
+            if (data.Lists.Count >= index + 1)
+            {
+                data.CurrentListIndex = index;
             }
         }
 
@@ -42,14 +47,6 @@ namespace BibleStudy
                 return new List<BookData> { book };
             }
             return new List<BookData>();
-        }
-
-        public void SetCurrentListIndex(int index)
-        {
-            if (data.Lists.Count >= index + 1)
-            {
-                data.CurrentListIndex = index;
-            }
         }
 
         public List<BookData> AddReadingList(string firstBookname, string lastBookname, string currentBookname, int currentChapterNumber)
@@ -132,6 +129,9 @@ namespace BibleStudy
                 return currentReadingListItem;
             }
         }
+
+        private ReadingListData data;
+        private List<BookData> books;
 
         private List<ReadingChapterHeader> buildBookChapterList(BookData book)
         {

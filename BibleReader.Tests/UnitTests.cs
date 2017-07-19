@@ -7,6 +7,7 @@ using BibleModel;
 using KjvBible;
 using System.IO;
 using BibleStudy;
+using Newtonsoft.Json;
 
 namespace BibleStudy.Tests
 {
@@ -18,8 +19,20 @@ namespace BibleStudy.Tests
         [TestInitialize]
         public void Init()
         {
-            var bible = Service.GetBible();
-            books = bible.GetCannonizedBookData();
+            //var bible = Service.GetBible();
+            //books = bible.GetCannonizedBookData();
+            //var booksJson = JsonConvert.SerializeObject(books);
+                
+            //using (var stream = new StreamWriter("BookDataList.json"))
+            //{
+            //    stream.WriteLine(booksJson);
+            //}
+
+            using (var stream = new StreamReader(@"Data\BookDataList.json"))
+            {
+                var booksJson = stream.ReadLine();
+                books = JsonConvert.DeserializeObject<List<BookData>>(booksJson);
+            }
         }
 
         [TestMethod]
@@ -31,7 +44,8 @@ namespace BibleStudy.Tests
         [TestMethod]
         public void CanAddReadingListsByRange()
         {
-            var reader = new BibleReader(books, new ReadingListData());
+            var readingListData = new ReadingListData();
+            var reader = new BibleReader(books, readingListData);
             var list1 = reader.AddReadingList("Gen", "Deut", "Ex", 7);
             Assert.AreEqual(5, list1.Count);
             Assert.AreEqual(50, list1[0].ChapterCount);
