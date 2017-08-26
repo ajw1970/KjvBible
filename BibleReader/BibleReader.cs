@@ -1,4 +1,5 @@
 ﻿using BibleModel;
+using ScriptureReferenceParser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,34 +12,34 @@ namespace BibleStudy
     {
         public BibleReader(List<BookData> books, ReadingListData data)
         {
-            this.books = books;
-            this.data = data;
+            _books = books;
+            _data = data;
         }
 
         public ReadingListData ReadingListData
         {
             get
             {
-                return data;
+                return _data;
             }
         }
 
         public void SetCurrentListIndex(int index)
         {
-            if (data.Lists.Count >= index + 1)
+            if (_data.Lists.Count >= index + 1)
             {
-                data.CurrentListIndex = index;
+                _data.CurrentListIndex = index;
             }
         }
 
         public List<BookData> AddReadingList(string bookName, int currentChapter)
         {
-            var book = (from b in books
+            var book = (from b in _books
                         where b.Name.StartsWith(bookName) || b.AbbreviatedName.StartsWith(bookName)
                         select b).FirstOrDefault();
             if (book != null)
             {
-                data.Lists.Add(new ReadingList
+                _data.Lists.Add(new ReadingList
                 {
                     Name = bookName,
                     ReadingChapters = buildBookChapterList(book),
@@ -49,13 +50,28 @@ namespace BibleStudy
             return new List<BookData>();
         }
 
+        public List<BookData> AddReadingList(string books, string current)
+        {
+            var parser = new Parser();
+
+            var bookRange = parser.ParseBookRange(books);;
+            var currentChapter = parser.ParseChapter(current);
+
+            if (bookRange.Last == string.Empty && bookRange.First == currentChapter.Book)
+            {
+                return AddReadingList(currentChapter.Book, currentChapter.Chapter);
+            }
+
+            return AddReadingList(bookRange.First, bookRange.Last, currentChapter.Book, currentChapter.Chapter);
+        }
+
         public List<BookData> AddReadingList(string firstBookname, string lastBookname, string currentBookname, int currentChapterNumber)
         {
             var addedBooks = new List<BookData>();
             var range = new List<ReadingChapterHeader>();
             var inRange = false;
 
-            foreach (var book in books)
+            foreach (var book in _books)
             {
                 if (!inRange && (book.Name.StartsWith(firstBookname) || book.AbbreviatedName.StartsWith(firstBookname)))
                 {
@@ -84,7 +100,7 @@ namespace BibleStudy
                 var currentChapter = (from c in range
                                       where c.BookName == currentBook.Name && c.Number == currentChapterNumber
                                       select c).FirstOrDefault();
-                data.Lists.Add(new ReadingList
+                _data.Lists.Add(new ReadingList
                 {
                     Name = String.Format("{0}-{1}", firstBookname, lastBookname),
                     ReadingChapters = range,
@@ -117,21 +133,21 @@ namespace BibleStudy
                     currentReadingList.CurrentChapterIndex = 0;
                 }
 
-                if (data.Lists.Count > data.CurrentListIndex + 1)
+                if (_data.Lists.Count > _data.CurrentListIndex + 1)
                 {
-                    data.CurrentListIndex++;
+                    _data.CurrentListIndex++;
                 }
                 else
                 {
-                    data.CurrentListIndex = 0;
+                    _data.CurrentListIndex = 0;
                 }
 
                 return currentReadingListItem;
             }
         }
 
-        private ReadingListData data;
-        private List<BookData> books;
+        private ReadingListData _data;
+        private List<BookData> _books;
 
         private List<ReadingChapterHeader> buildBookChapterList(BookData book)
         {
@@ -151,7 +167,7 @@ namespace BibleStudy
         {
             get
             {
-                return data.Lists[data.CurrentListIndex];
+                return _data.Lists[_data.CurrentListIndex];
             }
         }
 
