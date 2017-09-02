@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleModel", "..\BibleModel\BibleModel.csproj", "{15C52B9C-29E4-4900-833E-BEC6A70A9A0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleModel", "BibleModel\BibleModel.csproj", "{15C52B9C-29E4-4900-833E-BEC6A70A9A0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleReader", "BibleReader.csproj", "{CC5A77D9-D56B-49DD-9F7A-0724F750174C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleReader", "BibleReader\BibleReader.csproj", "{CC5A77D9-D56B-49DD-9F7A-0724F750174C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleReader.Tests", "..\BibleReader.Tests\BibleReader.Tests.csproj", "{B4D305FB-2A85-497B-915C-83B8E2560021}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleReader.Tests", "BibleReader.Tests\BibleReader.Tests.csproj", "{B4D305FB-2A85-497B-915C-83B8E2560021}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptureReferenceParser", "ScriptureReferenceParser\ScriptureReferenceParser.csproj", "{CE94BA61-8F2B-4332-9857-7842CA7A0C0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptureReferenceParser", "BibleReader\ScriptureReferenceParser\ScriptureReferenceParser.csproj", "{CE94BA61-8F2B-4332-9857-7842CA7A0C0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptureReferenceParser.Tests", "ScriptureReferenceParser.Tests\ScriptureReferenceParser.Tests.csproj", "{7C613636-49D5-4BBA-81F7-A8C8D66265ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptureReferenceParser.Tests", "BibleReader\ScriptureReferenceParser.Tests\ScriptureReferenceParser.Tests.csproj", "{7C613636-49D5-4BBA-81F7-A8C8D66265ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
