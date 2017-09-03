@@ -18,13 +18,12 @@ namespace BibleStudy.Tests
     {
         List<BookData> books;
 
-        [TestInitialize]
-        public void Init()
+        public BibleReaderConfigurationTests()
         {
             //var bible = Service.GetBible();
             //books = bible.GetCannonizedBookData();
             //var booksJson = JsonConvert.SerializeObject(books);
-                
+
             //using (var stream = new StreamWriter("BookDataList.json"))
             //{
             //    stream.WriteLine(booksJson);
@@ -37,13 +36,13 @@ namespace BibleStudy.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void BibleHas_66_Books()
         {
-            Assert.AreEqual(66, books.Count);
+            books.Count.Should().Be(66);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanAddReadingListsByRangeStringAndCurrentString()
         {
             var bookMarksData = new BibleReaderBookMarksData();
@@ -60,7 +59,7 @@ namespace BibleStudy.Tests
             Assert.AreEqual(187, chapterCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanAddReadingListsByBookStringAndCurrentString()
         {
             var bookMarks = new BibleReaderBookMarksData();
@@ -69,7 +68,7 @@ namespace BibleStudy.Tests
             Assert.AreEqual(1, list1.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanAddReadingListsByRange()
         {
             var bookMarks = new BibleReaderBookMarksData();
@@ -134,7 +133,7 @@ namespace BibleStudy.Tests
             Assert.AreEqual("Judges 19", reader.NextChapterHeader.ToString());
         }
 
-        [TestMethod]
+        [Fact]
         public void BibleReaderReturnsCurrentBookChapterVerse()
         {
             var bibleReader = new BibleReader(books, new BibleReaderBookMarksData());
