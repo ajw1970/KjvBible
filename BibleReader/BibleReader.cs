@@ -10,10 +10,25 @@ namespace BibleStudy
 {
     public class BibleReader
     {
-        public BibleReader(List<BookData> books, ReadingListData data)
+        public BibleReader(IList<BookData> books, BibleReaderBookMarksData bookMarksData)
         {
             _books = books;
-            _data = data;
+            _data = new ReadingListData();
+
+            _bookMarksData = bookMarksData;
+            foreach (var bookMark in _bookMarksData.BookMarks)
+            {
+                AddReadingList(bookMark);
+            }
+
+            for (int i = 0; i < _data.Lists.Count; i++)
+            {
+                if (_data.Lists[i].Name.Equals(_bookMarksData.CurrentBookMark))
+                {
+                    SetCurrentListIndex(i);
+                    break;
+                }
+            }
         }
 
         public ReadingListData ReadingListData
@@ -30,6 +45,21 @@ namespace BibleStudy
             {
                 _data.CurrentListIndex = index;
             }
+        }
+
+        private List<BookData> AddReadingList(BibleReaderBookMarkData bookMark)
+        {
+            var parser = new Parser();
+
+            var bookRange = parser.ParseBookRange(bookMark.Range); ;
+            var currentChapter = parser.ParseChapter(bookMark.Current);
+
+            if (bookRange.Last == string.Empty && bookRange.First == currentChapter.Book)
+            {
+                return AddReadingList(currentChapter.Book, currentChapter.Chapter);
+            }
+
+            return AddReadingList(bookRange.First, bookRange.Last, currentChapter.Book, currentChapter.Chapter);
         }
 
         public List<BookData> AddReadingList(string bookName, int currentChapter)
@@ -52,17 +82,12 @@ namespace BibleStudy
 
         public List<BookData> AddReadingList(string books, string current)
         {
-            var parser = new Parser();
+            var bookMark = new BibleReaderBookMarkData(books, current);
 
-            var bookRange = parser.ParseBookRange(books);;
-            var currentChapter = parser.ParseChapter(current);
+            var list = AddReadingList(bookMark);
+            _bookMarksData.BookMarks.Add(bookMark);
 
-            if (bookRange.Last == string.Empty && bookRange.First == currentChapter.Book)
-            {
-                return AddReadingList(currentChapter.Book, currentChapter.Chapter);
-            }
-
-            return AddReadingList(bookRange.First, bookRange.Last, currentChapter.Book, currentChapter.Chapter);
+            return list;
         }
 
         public List<BookData> AddReadingList(string firstBookname, string lastBookname, string currentBookname, int currentChapterNumber)
@@ -147,7 +172,8 @@ namespace BibleStudy
         }
 
         private ReadingListData _data;
-        private List<BookData> _books;
+        private IList<BookData> _books;
+        private BibleReaderBookMarksData _bookMarksData;
 
         private List<ReadingChapterHeader> buildBookChapterList(BookData book)
         {

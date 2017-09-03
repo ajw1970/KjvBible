@@ -35,7 +35,7 @@ namespace BibleStudy.Tests
         {
             get
             {
-                var data = new ReadingListData();
+                var data = new BibleReaderBookMarksData();
                 var testReader = new BibleReader(Books, data);
 
                 testReader.AddReadingList("Genesis-Deuteronomy", "Exodus 38");

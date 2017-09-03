@@ -6,7 +6,10 @@ using System.Collections;
 using BibleModel;
 using System.IO;
 using BibleStudy;
+using FluentAssertions;
 using Newtonsoft.Json;
+using Xunit;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace BibleStudy.Tests
 {
@@ -43,8 +46,8 @@ namespace BibleStudy.Tests
         [TestMethod]
         public void CanAddReadingListsByRangeStringAndCurrentString()
         {
-            var readingListData = new ReadingListData();
-            var reader = new BibleReader(books, readingListData);
+            var bookMarksData = new BibleReaderBookMarksData();
+            var reader = new BibleReader(books, bookMarksData);
             var list1 = reader.AddReadingList("Gen-Deut", "Ex 7");
             Assert.AreEqual(5, list1.Count, "Chapter Count");
             Assert.AreEqual(50, list1[0].ChapterCount);
@@ -60,8 +63,8 @@ namespace BibleStudy.Tests
         [TestMethod]
         public void CanAddReadingListsByBookStringAndCurrentString()
         {
-            var readingListData = new ReadingListData();
-            var reader = new BibleReader(books, readingListData);
+            var bookMarks = new BibleReaderBookMarksData();
+            var reader = new BibleReader(books, bookMarks);
             var list1 = reader.AddReadingList("Psalm", "Psalm 44");
             Assert.AreEqual(1, list1.Count);
         }
@@ -69,8 +72,8 @@ namespace BibleStudy.Tests
         [TestMethod]
         public void CanAddReadingListsByRange()
         {
-            var readingListData = new ReadingListData();
-            var reader = new BibleReader(books, readingListData);
+            var bookMarks = new BibleReaderBookMarksData();
+            var reader = new BibleReader(books, bookMarks);
             var list1 = reader.AddReadingList("Gen", "Deut", "Ex", 7);
             Assert.AreEqual(5, list1.Count);
             Assert.AreEqual(50, list1[0].ChapterCount);
@@ -134,7 +137,7 @@ namespace BibleStudy.Tests
         [TestMethod]
         public void BibleReaderReturnsCurrentBookChapterVerse()
         {
-            var bibleReader = new BibleReader(books, new ReadingListData());
+            var bibleReader = new BibleReader(books, new BibleReaderBookMarksData());
             bibleReader.AddReadingList("Gen", 1);
             bibleReader.AddReadingList("John", 1);
             bibleReader.AddReadingList("Jude", 1);
@@ -161,6 +164,31 @@ namespace BibleStudy.Tests
 
             Assert.AreEqual("Genesis 4", bibleReader.NextChapterHeader.ToString(), "NextReturns Gen 4");
             Assert.AreEqual("John 4", bibleReader.NextChapterHeader.ToString(), "NextReturns John 4");
+        }
+
+        [TestMethod]
+        public void BibleReaderCanStartWithStateData()
+        {
+            var data = new BibleReaderBookMarksData()
+            {
+                BookMarks = new List<BibleReaderBookMarkData>()
+                {
+                    new BibleReaderBookMarkData("Genesis-Deuteronomy", "Exodus 38"),
+                    new BibleReaderBookMarkData("Joshua-2 Chronicles", "1 Samuel 25"),
+                    new BibleReaderBookMarkData("Ezra-Jacob", "Esther 9"),
+                    new BibleReaderBookMarkData("Psalm", "Psalm 81"),
+                    new BibleReaderBookMarkData("Proverbs-Song of Solomon", "Proverbs 4"),
+                    new BibleReaderBookMarkData("Isaiah-Daniel", "Jeremiah 37"),
+                    new BibleReaderBookMarkData("Hosea-Malachi", "Zechariah 11"),
+                    new BibleReaderBookMarkData("Matthew-John", "Mark 7"),
+                    new BibleReaderBookMarkData("Acts-2 Corinthians", "Acts 7"),
+                    new BibleReaderBookMarkData("Galatians-Revelation", "1 John 2"),
+                },
+                CurrentBookMark = "Hosea-Malachi"
+            };
+            var bibleReader = new BibleReader(books, data);
+
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("Zechariah 11");
         }
     }
 }
