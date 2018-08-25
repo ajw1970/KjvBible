@@ -41,7 +41,7 @@ namespace BibleStudy.Tests
         {
             var bookMarksData = new BibleReaderBookMarksData();
             var reader = new BibleReader(_books, bookMarksData);
-            var list1 = reader.AddReadingList("Gen-Deut", "Ex 7");
+            var list1 = reader.AddReadingList(books: "Gen-Deut", current: "Ex 7");
             list1.Count.Should().Be(5, "Chapter Count");
             list1[0].ChapterCount.Should().Be(50);
             list1[1].ChapterCount.Should().Be(40);
@@ -58,7 +58,7 @@ namespace BibleStudy.Tests
         {
             var bookMarks = new BibleReaderBookMarksData();
             var reader = new BibleReader(_books, bookMarks);
-            var list1 = reader.AddReadingList("Psalm", "Psalm 44");
+            var list1 = reader.AddReadingList(books: "Psalm", current: "Psalm 44");
             list1.Count.Should().Be(1);
         }
 
@@ -67,7 +67,9 @@ namespace BibleStudy.Tests
         {
             var bookMarks = new BibleReaderBookMarksData();
             var reader = new BibleReader(_books, bookMarks);
-            var list1 = reader.AddReadingList("Gen", "Deut", "Ex", 7);
+            var list1 = reader.AddReadingList(
+                firstBookname: "Gen", lastBookname: "Deut", 
+                currentBookname: "Ex", currentChapterNumber: 7);
             list1.Count.Should().Be(5);
             list1[0].ChapterCount.Should().Be(50);
             list1[1].ChapterCount.Should().Be(40);
@@ -80,7 +82,9 @@ namespace BibleStudy.Tests
 
             var bookLists = new List<BookData>(list1);
 
-            var list2 = reader.AddReadingList("Joshua", "2 Chron", "Judges", 19);
+            List<BookData> list2 = reader.AddReadingList(
+                firstBookname: "Joshua", lastBookname: "2 Chron", 
+                currentBookname: "Judges", currentChapterNumber: 19);
             list2.Count.Should().Be(9);
             bookLists.AddRange(list2);
 
@@ -131,9 +135,9 @@ namespace BibleStudy.Tests
         public void BibleReaderReturnsCurrentBookChapterVerse()
         {
             var bibleReader = new BibleReader(_books, new BibleReaderBookMarksData());
-            bibleReader.AddReadingList("Gen", 1);
-            bibleReader.AddReadingList("John", 1);
-            bibleReader.AddReadingList("Jude", 1);
+            bibleReader.AddReadingList(bookName: "Gen", currentChapter: 1);
+            bibleReader.AddReadingList(bookName: "John", currentChapter: 1);
+            bibleReader.AddReadingList(bookName: "Jude", currentChapter: 1);
 
             bibleReader.CurrentChapterHeader.ToString().Should().Be("Genesis 1", "CurrentReturns Gen 1");
 
