@@ -15,15 +15,14 @@ namespace BibleStudy
             _books = books;
             _data = new ReadingListData();
 
-            _bookMarksData = bookMarksData;
-            foreach (var bookMark in _bookMarksData.BookMarks)
+            foreach (var bookMark in bookMarksData.BookMarks)
             {
                 AddReadingList(bookMark);
             }
 
             for (int i = 0; i < _data.Lists.Count; i++)
             {
-                if (_data.Lists[i].Name.Equals(_bookMarksData.CurrentBookMark))
+                if (_data.Lists[i].Name.Equals(bookMarksData.CurrentBookMark))
                 {
                     SetCurrentListIndex(i);
                     break;
@@ -85,7 +84,6 @@ namespace BibleStudy
             var bookMark = new BibleReaderBookMarkData(books, current);
 
             var list = AddReadingList(bookMark);
-            _bookMarksData.BookMarks.Add(bookMark);
 
             return list;
         }
@@ -173,7 +171,6 @@ namespace BibleStudy
 
         private ReadingListData _data;
         private IList<BookData> _books;
-        private BibleReaderBookMarksData _bookMarksData;
 
         private List<ReadingChapterHeader> buildBookChapterList(BookData book)
         {
