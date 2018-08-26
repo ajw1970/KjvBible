@@ -31,13 +31,7 @@ namespace BibleStudy
             }
         }
 
-        public ReadingListData ReadingListData
-        {
-            get
-            {
-                return _data;
-            }
-        }
+        public int ReadingListsCount => _data.Lists.Count;
 
         public ReadingChapterHeader CurrentChapterHeader
         {

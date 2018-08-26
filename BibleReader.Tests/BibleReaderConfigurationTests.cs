@@ -48,7 +48,7 @@ namespace BibleStudy.Tests
             list1[2].ChapterCount.Should().Be(27);
             list1[3].ChapterCount.Should().Be(36);
             list1[4].ChapterCount.Should().Be(34);
-            reader.ReadingListData.Lists.Count.Should().Be(1);
+            reader.ReadingListsCount.Should().Be(1);
             var chapterCount = list1.Sum(c => c.ChapterCount);
             chapterCount.Should().Be(187);
         }
@@ -76,7 +76,7 @@ namespace BibleStudy.Tests
             list1[2].ChapterCount.Should().Be(27);
             list1[3].ChapterCount.Should().Be(36);
             list1[4].ChapterCount.Should().Be(34);
-            reader.ReadingListData.Lists.Count.Should().Be(1);
+            reader.ReadingListsCount.Should().Be(1);
             var chapterCount = list1.Sum(c => c.ChapterCount);
             chapterCount.Should().Be(187);
 
