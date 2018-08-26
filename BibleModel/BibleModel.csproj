@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Binder.cs" />
     <Compile Include="Book.cs" />
+    <Compile Include="BookData.cs" />
     <Compile Include="BookGroup.cs" />
     <Compile Include="Chapter.cs" />
     <Compile Include="ReadingChapter.cs" />

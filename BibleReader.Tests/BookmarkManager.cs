@@ -9,7 +9,7 @@ namespace BibleStudy.Tests
     {
         public class BookmarkManager
         {
-            public BookmarkManager(IEnumerable<BookData> books, BookmarksStateData bookmarks, IParser parser)
+            public BookmarkManager(IEnumerable<BookData> books, BookmarksStateData bookmarks, IBibleReferenceParser parser)
             {
                 _books = books;
                 _bookmarks = bookmarks;
@@ -18,7 +18,7 @@ namespace BibleStudy.Tests
 
             private readonly IEnumerable<BookData> _books;
             private readonly BookmarksStateData _bookmarks;
-            private readonly IParser _parser;
+            private readonly IBibleReferenceParser _parser;
 
             public string CurrentReadingChapter
             {

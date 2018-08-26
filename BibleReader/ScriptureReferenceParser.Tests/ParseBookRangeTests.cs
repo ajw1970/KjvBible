@@ -14,7 +14,7 @@ namespace ScriptureReferenceParser.Tests
         [Fact]
         public void CanParseChapter()
         {
-            var parser = new Parser();
+            var parser = new BibleReferenceParser();
             parser.ParseChapter("Ex 38")
                 .Should().Be(("Ex", 38));
         }
@@ -22,7 +22,7 @@ namespace ScriptureReferenceParser.Tests
         [Fact]
         public void CanParseChapterWithMultipleSpaces()
         {
-            var parser = new Parser();
+            var parser = new BibleReferenceParser();
             parser.ParseChapter("2 Peter 2")
                 .Should().Be(("2 Peter", 2));
         }
@@ -30,7 +30,7 @@ namespace ScriptureReferenceParser.Tests
         [Fact]
         public void CanParseChapterWithTrailingSpace()
         {
-            var parser = new Parser();
+            var parser = new BibleReferenceParser();
             parser.ParseChapter("1 John 2 ")
                 .Should().Be(("1 John", 2));
         }
@@ -38,7 +38,7 @@ namespace ScriptureReferenceParser.Tests
         [Fact]
         public void NoSpaceShouldThrowException()
         {
-            var parser = new Parser();
+            var parser = new BibleReferenceParser();
             parser.Invoking(p => p.ParseChapter("Psalm50"))
                 .ShouldThrow<ArgumentException>()
                 .WithMessage("Expecting a space between book and chapterReference\r\nParameter name: chapterReference");
@@ -47,7 +47,7 @@ namespace ScriptureReferenceParser.Tests
         [Fact]
         public void NoChapterNumberShouldThrowException()
         {
-            var parser = new Parser();
+            var parser = new BibleReferenceParser();
             parser.Invoking(p => p.ParseChapter("Psalm fifty"))
                 .ShouldThrow<ArgumentException>()
                 .WithMessage("Expecting a whole number after book name\r\nParameter name: chapterReference");
@@ -59,7 +59,7 @@ namespace ScriptureReferenceParser.Tests
         [Fact]
         public void CanParseStringWithHyphenatedSetOfBooks()
         {
-            var parser = new Parser();
+            var parser = new BibleReferenceParser();
             parser.ParseBookRange("Gen-Deut")
                 .Should().Be(("Gen","Deut"));
         }
@@ -67,7 +67,7 @@ namespace ScriptureReferenceParser.Tests
         [Fact]
         public void CanParseStringWithSingleBook()
         {
-            var parser = new Parser();
+            var parser = new BibleReferenceParser();
             parser.ParseBookRange("Psalm")
                 .Should().Be(("Psalm", ""));
         }
@@ -75,7 +75,7 @@ namespace ScriptureReferenceParser.Tests
         [Fact]
         public void MoreThanTwoThrowsException()
         {
-            var parser = new Parser();
+            var parser = new BibleReferenceParser();
             parser.Invoking(p => p.ParseBookRange("One-Two-Three"))
                 .ShouldThrow<ArgumentException>()
                 .WithMessage("Expecting hyphenated set of books: \"first-last\"\r\nParameter name: bookRange");

@@ -44,8 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IParser.cs" />
-    <Compile Include="Parser.cs" />
+    <Compile Include="IBibleReferenceParser.cs" />
+    <Compile Include="BibleReferenceParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

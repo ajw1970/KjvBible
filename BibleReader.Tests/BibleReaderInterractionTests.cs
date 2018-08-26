@@ -33,36 +33,6 @@ namespace BibleStudy.Tests
         }
 
         [Fact]
-        public void CanPredictSerializedBookmarks()
-        {
-            var bookmarks = new BookmarksStateData()
-            {
-                List = new BookmarkStateData[]
-                {
-                    new BookmarkStateData()
-                    {
-                        Name = "Genesis-Deuteronomy",
-                        Position = "Exodus 38"
-                    },
-                    new BookmarkStateData()
-                    {
-                        Name = "Joshua-2 Chronicles",
-                        Position = "1 Samuel 25"
-                    },
-                },
-                Current = "Genesis-Deuteronomy"
-            };
-
-            var bookmarksJson = JsonConvert.SerializeObject(bookmarks);
-
-            bookmarksJson.Should().Be("{\"Current\":\"Genesis-Deuteronomy\","+
-                                      "\"List\":[" +
-                                      "{\"Name\":\"Genesis-Deuteronomy\",\"Position\":\"Exodus 38\"}," +
-                                      "{\"Name\":\"Joshua-2 Chronicles\",\"Position\":\"1 Samuel 25\"}" +
-                                      "]}");
-        }
-
-        [Fact]
         public void CanManageSimpleBookmarkStateData()
         {
             var bookmarksJson = "{\"Current\":\"Genesis-Deuteronomy\",\"List\":" +
@@ -83,7 +53,7 @@ namespace BibleStudy.Tests
             bookmarks.List.Count().Should().Be(10);
             bookmarks.Current.Should().Be("Genesis-Deuteronomy");
 
-            var bookmarkManager = new BookmarkManager(Books, bookmarks, new Parser());
+            var bookmarkManager = new BookmarkManager(Books, bookmarks, new BibleReferenceParser());
 
             bookmarkManager.CurrentReadingChapter.Should().Be("Exodus 38", "Initially loaded current position");
             bookmarkManager.MoveToNextBookmark();

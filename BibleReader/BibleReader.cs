@@ -49,7 +49,7 @@ namespace BibleStudy
 
         private List<BookData> AddReadingList(BibleReaderBookMarkData bookMark)
         {
-            var parser = new Parser();
+            var parser = new BibleReferenceParser();
 
             var bookRange = parser.ParseBookRange(bookMark.Range); ;
             var currentChapter = parser.ParseChapter(bookMark.Current);
