@@ -96,9 +96,6 @@
   <ItemGroup>
     <Compile Include="BibleReaderInterractionTests.cs" />
     <Compile Include="BibleReaderConfigurationTests.cs" />
-    <Compile Include="BookmarkManager.cs" />
-    <Compile Include="BookmarksStateData.cs" />
-    <Compile Include="BookmarkStateData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

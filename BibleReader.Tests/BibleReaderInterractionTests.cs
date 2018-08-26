@@ -32,38 +32,6 @@ namespace BibleStudy.Tests
             TestReader.NextChapterHeader.ToString().Should().Be("1 Samuel 25");
         }
 
-        [Fact]
-        public void CanManageSimpleBookmarkStateData()
-        {
-            var bookmarksJson = "{\"Current\":\"Genesis-Deuteronomy\",\"List\":" +
-                                "[" +
-                                "{\"Name\":\"Genesis-Deuteronomy\",\"Position\":\"Exodus 38\"}," +
-                                "{\"Name\":\"Joshua-2 Chronicles\",\"Position\":\"1 Samuel 25\"}," +
-                                "{\"Name\":\"Ezra-Jacob\",\"Position\":\"Esther 9\"}," +
-                                "{\"Name\":\"Psalm\",\"Position\":\"Psalm 81\"}," +
-                                "{\"Name\":\"Proverbs-Song of Solomon\",\"Position\":\"Proverbs 4\"}," +
-                                "{\"Name\":\"Isaiah-Daniel\",\"Position\":\"Jeremiah 37\"}," +
-                                "{\"Name\":\"Hosea-Malachi\",\"Position\":\"Zechariah 11\"}," +
-                                "{\"Name\":\"Matthew-John\",\"Position\":\"Mark 7\"}," +
-                                "{\"Name\":\"Acts-2 Corinthians\",\"Position\":\"Acts 7\"}," +
-                                "{\"Name\":\"Galatians-Revelation\",\"Position\":\"1 John 2\"}" +
-                                "]}";
-            var bookmarks = JsonConvert.DeserializeObject<BookmarksStateData>(bookmarksJson);
-
-            bookmarks.List.Count().Should().Be(10);
-            bookmarks.Current.Should().Be("Genesis-Deuteronomy");
-
-            var bookmarkManager = new BookmarkManager(Books, bookmarks, new BibleReferenceParser());
-
-            bookmarkManager.CurrentReadingChapter.Should().Be("Exodus 38", "Initially loaded current position");
-            bookmarkManager.MoveToNextBookmark();
-            bookmarkManager.CurrentReadingChapter.Should().Be("1 Samuel 25", "Next bookmark position");
-
-            var managedState = bookmarkManager.State;
-            managedState.Current.Should().Be("Joshua-2 Chronicles", "State reflects change to current");
-            managedState.List.First().Position.Should().Be("Exodus 39", "State should reflect updated position of previous list");
-        }
-
         private BibleReader TestReader
         {
             get
