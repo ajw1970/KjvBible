@@ -7,7 +7,7 @@ using System.Xml.Schema;
 
 namespace ScriptureReferenceParser
 {
-    public class Parser
+    public class Parser : IParser
     {
         public (string First, string Last) ParseBookRange(string bookRange)
         {

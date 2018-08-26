@@ -69,6 +69,7 @@
     <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
     </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
@@ -95,6 +96,9 @@
   <ItemGroup>
     <Compile Include="BibleReaderInterractionTests.cs" />
     <Compile Include="BibleReaderConfigurationTests.cs" />
+    <Compile Include="BookmarkManager.cs" />
+    <Compile Include="BookmarksStateData.cs" />
+    <Compile Include="BookmarkStateData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +109,10 @@
     <ProjectReference Include="..\BibleReader\BibleReader.csproj">
       <Project>{cc5a77d9-d56b-49dd-9f7a-0724f750174c}</Project>
       <Name>BibleReader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BibleReader\ScriptureReferenceParser\ScriptureReferenceParser.csproj">
+      <Project>{ce94ba61-8f2b-4332-9857-7842ca7a0c0c}</Project>
+      <Name>ScriptureReferenceParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
