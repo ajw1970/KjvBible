@@ -4,6 +4,7 @@ using BibleModel;
 using System.IO;
 using FluentAssertions;
 using Newtonsoft.Json;
+using ScriptureReferenceParser;
 using Xunit;
 
 namespace BibleStudy.Tests
@@ -11,6 +12,7 @@ namespace BibleStudy.Tests
     public class BibleReaderConfigurationTests
     {
         readonly List<BookData> _books;
+        private readonly IBibleReferenceParser _parser;
 
         public BibleReaderConfigurationTests()
         {
@@ -28,6 +30,8 @@ namespace BibleStudy.Tests
                 var booksJson = stream.ReadLine();
                 _books = JsonConvert.DeserializeObject<List<BookData>>(booksJson);
             }
+
+            _parser = new BibleReferenceParser();
         }
 
         [Fact]
@@ -39,86 +43,91 @@ namespace BibleStudy.Tests
         [Fact]
         public void CanAddReadingListsByRangeStringAndCurrentString()
         {
-            var reader = new BibleReader(_books);
-            var list1 = reader.AddReadingList(books: "Gen-Deut", current: "Ex 7");
-            list1.Count.Should().Be(5, "Chapter Count");
-            list1[0].ChapterCount.Should().Be(50);
-            list1[1].ChapterCount.Should().Be(40);
-            list1[2].ChapterCount.Should().Be(27);
-            list1[3].ChapterCount.Should().Be(36);
-            list1[4].ChapterCount.Should().Be(34);
-            reader.ReadingListsCount.Should().Be(1);
-            var chapterCount = list1.Sum(c => c.ChapterCount);
-            chapterCount.Should().Be(187);
+            var data = new BibleReaderBookMarkData(range: "Gen-Deut", current: "Ex 7");
+
+            data.GetBooksInRange(_parser, _books).Count().Should().Be(5, "Chapter Count");
+            data.GetChapterCountInRange(_parser, _books).Should().Be(50 + 40 + 27 + 36 + 34);
         }
 
         [Fact]
         public void CanAddReadingListsByBookStringAndCurrentString()
         {
-            var reader = new BibleReader(_books);
-            var list1 = reader.AddReadingList(books: "Psalm", current: "Psalm 44");
-            list1.Count.Should().Be(1);
+            var data = new BibleReaderBookMarkData(range: "Psalm", current: "Psalm 44");
+            data.GetBooksInRange(_parser, _books).Count().Should().Be(1);
         }
 
         [Fact]
         public void CanAddReadingListsByRange()
         {
-            var reader = new BibleReader(_books);
-            var list1 = reader.AddReadingList(
-                firstBookname: "Gen", lastBookname: "Deut",
+            var counts = new List<int>();
+            var bookMarks = new BibleReaderBookMarksData();
+
+            var data = new BibleReaderBookMarkData(firstBookname: "Gen", lastBookname: "Deut",
                 currentBookname: "Ex", currentChapterNumber: 7);
-            list1.Count.Should().Be(5);
-            list1[0].ChapterCount.Should().Be(50);
-            list1[1].ChapterCount.Should().Be(40);
-            list1[2].ChapterCount.Should().Be(27);
-            list1[3].ChapterCount.Should().Be(36);
-            list1[4].ChapterCount.Should().Be(34);
-            reader.ReadingListsCount.Should().Be(1);
-            var chapterCount = list1.Sum(c => c.ChapterCount);
-            chapterCount.Should().Be(187);
+            var count = data.GetBooksInRange(_parser, _books).Count();
+            count.Should().Be(5, "Gen-Deut");
+            counts.Add(count);
+            data.GetChapterCountInRange(_parser, _books).Should().Be(187, "Gen-Deut Total Chapters");
+            bookMarks = bookMarks.AddBookMark(data);
 
-            var bookLists = new List<BookData>(list1);
-
-            List<BookData> list2 = reader.AddReadingList(
-                firstBookname: "Joshua", lastBookname: "2 Chron",
+            data = new BibleReaderBookMarkData(firstBookname: "Joshua", lastBookname: "2 Chron",
                 currentBookname: "Judges", currentChapterNumber: 19);
-            list2.Count.Should().Be(9);
-            bookLists.AddRange(list2);
+            count = data.GetBooksInRange(_parser, _books).Count();
+            count.Should().Be(9, "Joshua-2 Chron");
+            counts.Add(count);
+            bookMarks = bookMarks.AddBookMark(data);
 
-            var list3 = reader.AddReadingList("Ezra", "Job", "Job", 42);
-            list3.Count.Should().Be(4);
-            bookLists.AddRange(list3);
+            data = new BibleReaderBookMarkData("Ezra", "Job", "Job", 42);
+            count = data.GetBooksInRange(_parser, _books).Count();
+            count.Should().Be(4, "Ezra-Job");
+            counts.Add(count);
+            bookMarks = bookMarks.AddBookMark(data);
 
-            var list4 = reader.AddReadingList("Psalm", 44);
-            list4.Count.Should().Be(1);
-            bookLists.AddRange(list4);
+            data = new BibleReaderBookMarkData("Psalm", 44);
+            count = data.GetBooksInRange(_parser, _books).Count();
+            count.Should().Be(1, "Psalm");
+            counts.Add(count);
+            bookMarks = bookMarks.AddBookMark(data);
 
-            var list5 = reader.AddReadingList("Prov", "Song", "Prov", 22);
-            list5.Count.Should().Be(3);
-            bookLists.AddRange(list5);
+            data = new BibleReaderBookMarkData("Prov", "Song", "Prov", 22);
+            count = data.GetBooksInRange(_parser, _books).Count();
+            count.Should().Be(3, "Prov-Song");
+            counts.Add(count);
+            bookMarks = bookMarks.AddBookMark(data);
 
-            var list6 = reader.AddReadingList("Isaiah", "Daniel", "Jer", 6);
-            list6.Count.Should().Be(5);
-            bookLists.AddRange(list6);
+            data = new BibleReaderBookMarkData("Isaiah", "Daniel", "Jer", 6);
+            count = data.GetBooksInRange(_parser, _books).Count();
+            count.Should().Be(5, "Isaiah-Daniel");
+            counts.Add(count);
+            bookMarks = bookMarks.AddBookMark(data);
 
-            var list7 = reader.AddReadingList("Hosea", "Malachi", "Jon", 2);
-            list7.Count.Should().Be(12);
-            bookLists.AddRange(list7);
+            data = new BibleReaderBookMarkData("Hosea", "Malachi", "Jon", 2);
+            count = data.GetBooksInRange(_parser, _books).Count();
+            count.Should().Be(12, "Hosea-Malachi");
+            counts.Add(count);
+            bookMarks = bookMarks.AddBookMark(data);
 
-            var list8 = reader.AddReadingList("Matt", "John", "Matt", 4);
-            list8.Count.Should().Be(4);
-            bookLists.AddRange(list8);
+            data = new BibleReaderBookMarkData("Matt", "John", "Matt", 4);
+            count = data.GetBooksInRange(_parser, _books).Count();
+            count.Should().Be(4, "Matt-John");
+            counts.Add(count);
+            bookMarks = bookMarks.AddBookMark(data);
 
-            var list9 = reader.AddReadingList("Acts", "2 Cor", "1 Cor", 5);
-            list9.Count.Should().Be(4);
-            bookLists.AddRange(list9);
+            data = new BibleReaderBookMarkData("Acts", "2 Cor", "1 Cor", 5);
+            count = data.GetBooksInRange(_parser, _books).Count();
+            count.Should().Be(4, "Acts-2 Cor");
+            counts.Add(count);
+            bookMarks = bookMarks.AddBookMark(data);
 
-            var list10 = reader.AddReadingList("Gal", "Rev", "2 Tim", 3);
-            list10.Count.Should().Be(19);
-            bookLists.AddRange(list10);
+            data = new BibleReaderBookMarkData("Gal", "Rev", "2 Tim", 3);
+            count = data.GetBooksInRange(_parser, _books).Count();
+            count.Should().Be(19, "Gal-Rev");
+            counts.Add(count);
+            bookMarks = bookMarks.AddBookMark(data);
 
-            bookLists.Count.Should().Be(66);
+            counts.Sum().Should().Be(66);
 
+            var reader = new BibleReader(_books, bookMarks);
             reader.SetCurrentListIndex(8);
 
             reader.CurrentChapterHeader.ToString().Should().Be("1 Corinthians 5", "Pick up after loading from file");
@@ -134,10 +143,12 @@ namespace BibleStudy.Tests
         [Fact]
         public void BibleReaderReturnsCurrentBookChapterVerse()
         {
-            var bibleReader = new BibleReader(_books);
-            bibleReader.AddReadingList(bookName: "Gen", currentChapter: 1);
-            bibleReader.AddReadingList(bookName: "John", currentChapter: 1);
-            bibleReader.AddReadingList(bookName: "Jude", currentChapter: 1);
+
+            var bibleReader = new BibleReader(_books, new BibleReaderBookMarksData()
+                .AddBookMark(bookName: "Gen", currentChapter: 1)
+                .AddBookMark(bookName: "John", currentChapter: 1)
+                .AddBookMark(bookName: "Jude", currentChapter: 1)
+            );
 
             bibleReader.CurrentChapterHeader.ToString().Should().Be("Genesis 1", "CurrentReturns Gen 1");
 

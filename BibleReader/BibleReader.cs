@@ -77,7 +77,16 @@ namespace BibleStudy
             }
         }
 
-        public List<BookData> AddReadingList(string bookName, int currentChapter)
+        public List<BookData> AddReadingList(string books, string current)
+        {
+            var bookMark = new BibleReaderBookMarkData(books, current);
+
+            var list = AddReadingList(bookMark);
+
+            return list;
+        }
+
+        private List<BookData> AddReadingList(string bookName, int currentChapter)
         {
             var book = (from b in _books
                         where b.Name.StartsWith(bookName) || b.AbbreviatedName.StartsWith(bookName)
@@ -95,16 +104,7 @@ namespace BibleStudy
             return new List<BookData>();
         }
 
-        public List<BookData> AddReadingList(string books, string current)
-        {
-            var bookMark = new BibleReaderBookMarkData(books, current);
-
-            var list = AddReadingList(bookMark);
-
-            return list;
-        }
-
-        public List<BookData> AddReadingList(string firstBookname, string lastBookname, string currentBookname, int currentChapterNumber)
+        private List<BookData> AddReadingList(string firstBookname, string lastBookname, string currentBookname, int currentChapterNumber)
         {
             var addedBooks = new List<BookData>();
             var range = new List<ReadingChapterHeader>();
