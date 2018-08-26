@@ -28,8 +28,10 @@ namespace BibleStudy.Tests
         [Fact]
         public void CanGetCurrentReadingList()
         {
-            TestReader.CurrentChapterHeader.ToString().Should().Be("Exodus 38");
-            TestReader.NextChapterHeader.ToString().Should().Be("1 Samuel 25");
+            var reader = TestReader;
+            reader.CurrentChapterHeader.ToString().Should().Be("Exodus 38");
+            reader.AdvanceToNext();
+            reader.CurrentChapterHeader.ToString().Should().Be("1 Samuel 25");
         }
 
         private BibleReader TestReader

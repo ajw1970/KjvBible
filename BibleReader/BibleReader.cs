@@ -13,6 +13,7 @@ namespace BibleStudy
         public BibleReader(IList<BookData> books, BibleReaderBookMarksData bookMarksData)
         {
             _books = books;
+
             _data = new ReadingListData();
 
             foreach (var bookMark in bookMarksData.BookMarks)
@@ -38,27 +39,44 @@ namespace BibleStudy
             }
         }
 
+        public ReadingChapterHeader CurrentChapterHeader
+        {
+            get
+            {
+                var currentReadingList = _data.Lists[_data.CurrentListIndex];
+                return currentReadingList.ReadingChapters[currentReadingList.CurrentChapterIndex];
+            }
+        }
+
+        public void AdvanceToNext()
+        {
+            var currentReadingList = _data.Lists[_data.CurrentListIndex];
+
+            if (currentReadingList.ReadingChapters.Count > currentReadingList.CurrentChapterIndex + 1)
+            {
+                currentReadingList.CurrentChapterIndex++;
+            }
+            else
+            {
+                currentReadingList.CurrentChapterIndex = 0;
+            }
+
+            if (_data.Lists.Count > _data.CurrentListIndex + 1)
+            {
+                _data.CurrentListIndex++;
+            }
+            else
+            {
+                _data.CurrentListIndex = 0;
+            }
+        }
+
         public void SetCurrentListIndex(int index)
         {
             if (_data.Lists.Count >= index + 1)
             {
                 _data.CurrentListIndex = index;
             }
-        }
-
-        private List<BookData> AddReadingList(BibleReaderBookMarkData bookMark)
-        {
-            var parser = new BibleReferenceParser();
-
-            var bookRange = parser.ParseBookRange(bookMark.Range); ;
-            var currentChapter = parser.ParseChapter(bookMark.Current);
-
-            if (bookRange.Last == string.Empty && bookRange.First == currentChapter.Book)
-            {
-                return AddReadingList(currentChapter.Book, currentChapter.Chapter);
-            }
-
-            return AddReadingList(bookRange.First, bookRange.Last, currentChapter.Book, currentChapter.Chapter);
         }
 
         public List<BookData> AddReadingList(string bookName, int currentChapter)
@@ -135,42 +153,20 @@ namespace BibleStudy
             return new List<BookData>();
         }
 
-        public ReadingChapterHeader CurrentChapterHeader
+        private List<BookData> AddReadingList(BibleReaderBookMarkData bookMark)
         {
-            get
+            var parser = new BibleReferenceParser();
+
+            var bookRange = parser.ParseBookRange(bookMark.Range); ;
+            var currentChapter = parser.ParseChapter(bookMark.Current);
+
+            if (bookRange.Last == string.Empty && bookRange.First == currentChapter.Book)
             {
-                return currentReadingListItem;
+                return AddReadingList(currentChapter.Book, currentChapter.Chapter);
             }
+
+            return AddReadingList(bookRange.First, bookRange.Last, currentChapter.Book, currentChapter.Chapter);
         }
-
-        public ReadingChapterHeader NextChapterHeader
-        {
-            get
-            {
-                if (currentReadingList.ReadingChapters.Count > currentReadingList.CurrentChapterIndex + 1)
-                {
-                    currentReadingList.CurrentChapterIndex++;
-                }
-                else
-                {
-                    currentReadingList.CurrentChapterIndex = 0;
-                }
-
-                if (_data.Lists.Count > _data.CurrentListIndex + 1)
-                {
-                    _data.CurrentListIndex++;
-                }
-                else
-                {
-                    _data.CurrentListIndex = 0;
-                }
-
-                return currentReadingListItem;
-            }
-        }
-
-        private ReadingListData _data;
-        private IList<BookData> _books;
 
         private List<ReadingChapterHeader> buildBookChapterList(BookData book)
         {
@@ -186,20 +182,8 @@ namespace BibleStudy
             return listing;
         }
 
-        private ReadingList currentReadingList
-        {
-            get
-            {
-                return _data.Lists[_data.CurrentListIndex];
-            }
-        }
+        private IList<BookData> _books;
 
-        private ReadingChapterHeader currentReadingListItem
-        {
-            get
-            {
-                return currentReadingList.ReadingChapters[currentReadingList.CurrentChapterIndex];
-            }
-        }
+        private ReadingListData _data;
     }
 }

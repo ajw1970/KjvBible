@@ -68,7 +68,7 @@ namespace BibleStudy.Tests
             var bookMarks = new BibleReaderBookMarksData();
             var reader = new BibleReader(_books, bookMarks);
             var list1 = reader.AddReadingList(
-                firstBookname: "Gen", lastBookname: "Deut", 
+                firstBookname: "Gen", lastBookname: "Deut",
                 currentBookname: "Ex", currentChapterNumber: 7);
             list1.Count.Should().Be(5);
             list1[0].ChapterCount.Should().Be(50);
@@ -78,12 +78,12 @@ namespace BibleStudy.Tests
             list1[4].ChapterCount.Should().Be(34);
             reader.ReadingListData.Lists.Count.Should().Be(1);
             var chapterCount = list1.Sum(c => c.ChapterCount);
-             chapterCount.Should().Be(187);
+            chapterCount.Should().Be(187);
 
             var bookLists = new List<BookData>(list1);
 
             List<BookData> list2 = reader.AddReadingList(
-                firstBookname: "Joshua", lastBookname: "2 Chron", 
+                firstBookname: "Joshua", lastBookname: "2 Chron",
                 currentBookname: "Judges", currentChapterNumber: 19);
             list2.Count.Should().Be(9);
             bookLists.AddRange(list2);
@@ -125,10 +125,13 @@ namespace BibleStudy.Tests
             reader.SetCurrentListIndex(8);
 
             reader.CurrentChapterHeader.ToString().Should().Be("1 Corinthians 5", "Pick up after loading from file");
-            reader.NextChapterHeader.ToString().Should().Be("2 Timothy 3");
+            reader.AdvanceToNext();
+            reader.CurrentChapterHeader.ToString().Should().Be("2 Timothy 3");
 
-            reader.NextChapterHeader.ToString().Should().Be("Exodus 7", "Pick up after loading again");
-            reader.NextChapterHeader.ToString().Should().Be("Judges 19");
+            reader.AdvanceToNext();
+            reader.CurrentChapterHeader.ToString().Should().Be("Exodus 7", "Pick up after loading again");
+            reader.AdvanceToNext();
+            reader.CurrentChapterHeader.ToString().Should().Be("Judges 19");
         }
 
         [Fact]
@@ -141,26 +144,37 @@ namespace BibleStudy.Tests
 
             bibleReader.CurrentChapterHeader.ToString().Should().Be("Genesis 1", "CurrentReturns Gen 1");
 
-            bibleReader.NextChapterHeader.ToString().Should().Be("John 1", "NextReturns John 1");
+            bibleReader.AdvanceToNext();
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("John 1", "NextReturns John 1");
 
-           bibleReader.CurrentChapterHeader.ToString().Should().Be("John 1", "CurrentAfterNextReturnsLastBookChapterVerse");
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("John 1", "CurrentAfterNextReturnsLastBookChapterVerse");
 
-           bibleReader.NextChapterHeader.ToString().Should().Be("Jude 1", "NextReturns Jude 1");
+            bibleReader.AdvanceToNext();
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("Jude 1", "NextReturns Jude 1");
 
-           bibleReader.NextChapterHeader.ToString().Should().Be("Genesis 2", "NextReturns Gen 2");
+            bibleReader.AdvanceToNext();
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("Genesis 2", "NextReturns Gen 2");
 
-           bibleReader.NextChapterHeader.ToString().Should().Be("John 2", "NextReturns John 2");
+            bibleReader.AdvanceToNext();
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("John 2", "NextReturns John 2");
 
-           bibleReader.NextChapterHeader.ToString().Should().Be("Jude 1", "NextReturns Jude 1 (2)");
+            bibleReader.AdvanceToNext();
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("Jude 1", "NextReturns Jude 1 (2)");
 
-           bibleReader.NextChapterHeader.ToString().Should().Be("Genesis 3", "NextReturns Gen 3");
+            bibleReader.AdvanceToNext();
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("Genesis 3", "NextReturns Gen 3");
 
-           bibleReader.NextChapterHeader.ToString().Should().Be("John 3", "NextReturns John 3");
+            bibleReader.AdvanceToNext();
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("John 3", "NextReturns John 3");
 
-           bibleReader.NextChapterHeader.ToString().Should().Be("Jude 1", "NextReturns Jude 1 (3)");
+            bibleReader.AdvanceToNext();
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("Jude 1", "NextReturns Jude 1 (3)");
 
-           bibleReader.NextChapterHeader.ToString().Should().Be("Genesis 4", "NextReturns Gen 4");
-           bibleReader.NextChapterHeader.ToString().Should().Be("John 4", "NextReturns John 4");
+            bibleReader.AdvanceToNext();
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("Genesis 4", "NextReturns Gen 4");
+
+            bibleReader.AdvanceToNext();
+            bibleReader.CurrentChapterHeader.ToString().Should().Be("John 4", "NextReturns John 4");
         }
 
         [Fact]
