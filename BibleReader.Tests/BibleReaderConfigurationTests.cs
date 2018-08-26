@@ -39,8 +39,7 @@ namespace BibleStudy.Tests
         [Fact]
         public void CanAddReadingListsByRangeStringAndCurrentString()
         {
-            var bookMarksData = new BibleReaderBookMarksData();
-            var reader = new BibleReader(_books, bookMarksData);
+            var reader = new BibleReader(_books);
             var list1 = reader.AddReadingList(books: "Gen-Deut", current: "Ex 7");
             list1.Count.Should().Be(5, "Chapter Count");
             list1[0].ChapterCount.Should().Be(50);
@@ -56,8 +55,7 @@ namespace BibleStudy.Tests
         [Fact]
         public void CanAddReadingListsByBookStringAndCurrentString()
         {
-            var bookMarks = new BibleReaderBookMarksData();
-            var reader = new BibleReader(_books, bookMarks);
+            var reader = new BibleReader(_books);
             var list1 = reader.AddReadingList(books: "Psalm", current: "Psalm 44");
             list1.Count.Should().Be(1);
         }
@@ -65,8 +63,7 @@ namespace BibleStudy.Tests
         [Fact]
         public void CanAddReadingListsByRange()
         {
-            var bookMarks = new BibleReaderBookMarksData();
-            var reader = new BibleReader(_books, bookMarks);
+            var reader = new BibleReader(_books);
             var list1 = reader.AddReadingList(
                 firstBookname: "Gen", lastBookname: "Deut",
                 currentBookname: "Ex", currentChapterNumber: 7);
@@ -137,7 +134,7 @@ namespace BibleStudy.Tests
         [Fact]
         public void BibleReaderReturnsCurrentBookChapterVerse()
         {
-            var bibleReader = new BibleReader(_books, new BibleReaderBookMarksData());
+            var bibleReader = new BibleReader(_books);
             bibleReader.AddReadingList(bookName: "Gen", currentChapter: 1);
             bibleReader.AddReadingList(bookName: "John", currentChapter: 1);
             bibleReader.AddReadingList(bookName: "Jude", currentChapter: 1);
@@ -180,23 +177,20 @@ namespace BibleStudy.Tests
         [Fact]
         public void BibleReaderCanStartWithStateData()
         {
-            var data = new BibleReaderBookMarksData()
+            var data = new BibleReaderBookMarksData("Hosea-Malachi", new List<BibleReaderBookMarkData>()
             {
-                BookMarks = new List<BibleReaderBookMarkData>()
-                {
-                    new BibleReaderBookMarkData("Genesis-Deuteronomy", "Exodus 38"),
-                    new BibleReaderBookMarkData("Joshua-2 Chronicles", "1 Samuel 25"),
-                    new BibleReaderBookMarkData("Ezra-Jacob", "Esther 9"),
-                    new BibleReaderBookMarkData("Psalm", "Psalm 81"),
-                    new BibleReaderBookMarkData("Proverbs-Song of Solomon", "Proverbs 4"),
-                    new BibleReaderBookMarkData("Isaiah-Daniel", "Jeremiah 37"),
-                    new BibleReaderBookMarkData("Hosea-Malachi", "Zechariah 11"),
-                    new BibleReaderBookMarkData("Matthew-John", "Mark 7"),
-                    new BibleReaderBookMarkData("Acts-2 Corinthians", "Acts 7"),
-                    new BibleReaderBookMarkData("Galatians-Revelation", "1 John 2"),
-                },
-                CurrentBookMark = "Hosea-Malachi"
-            };
+                new BibleReaderBookMarkData("Genesis-Deuteronomy", "Exodus 38"),
+                new BibleReaderBookMarkData("Joshua-2 Chronicles", "1 Samuel 25"),
+                new BibleReaderBookMarkData("Ezra-Jacob", "Esther 9"),
+                new BibleReaderBookMarkData("Psalm", "Psalm 81"),
+                new BibleReaderBookMarkData("Proverbs-Song of Solomon", "Proverbs 4"),
+                new BibleReaderBookMarkData("Isaiah-Daniel", "Jeremiah 37"),
+                new BibleReaderBookMarkData("Hosea-Malachi", "Zechariah 11"),
+                new BibleReaderBookMarkData("Matthew-John", "Mark 7"),
+                new BibleReaderBookMarkData("Acts-2 Corinthians", "Acts 7"),
+                new BibleReaderBookMarkData("Galatians-Revelation", "1 John 2"),
+            });
+
             var bibleReader = new BibleReader(_books, data);
 
             bibleReader.CurrentChapterHeader.ToString().Should().Be("Zechariah 11");

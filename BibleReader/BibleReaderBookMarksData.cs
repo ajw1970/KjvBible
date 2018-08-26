@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace BibleStudy
 {
     public class BibleReaderBookMarksData
     {
-        public string CurrentBookMark { get; set; }
-        public List<BibleReaderBookMarkData> BookMarks { get; set; }
+        public string CurrentBookMark { get; }
+        public List<BibleReaderBookMarkData> BookMarks { get; }
 
-        public BibleReaderBookMarksData()
+        public BibleReaderBookMarksData(string currentBookMark, IEnumerable<BibleReaderBookMarkData> bookMarks)
         {
-            BookMarks = new List<BibleReaderBookMarkData>();
+            CurrentBookMark = currentBookMark;
+            BookMarks = bookMarks.ToList();
         }
     }
 }

@@ -10,10 +10,14 @@ namespace BibleStudy
 {
     public class BibleReader
     {
-        public BibleReader(IList<BookData> books, BibleReaderBookMarksData bookMarksData)
+        public BibleReader(IList<BookData> books)
         {
             _books = books;
+            _data = new ReadingListData();
+        }
 
+        public BibleReader(IList<BookData> books, BibleReaderBookMarksData bookMarksData):this(books)
+        {
             _data = new ReadingListData();
 
             foreach (var bookMark in bookMarksData.BookMarks)
