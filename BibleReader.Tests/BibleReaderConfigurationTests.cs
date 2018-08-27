@@ -41,89 +41,74 @@ namespace BibleStudy.Tests
         }
 
         [Fact]
-        public void CanAddReadingListsByRangeStringAndCurrentString()
-        {
-            var data = new BibleReaderBookMarkData(range: "Gen-Deut", current: "Ex 7");
-
-            data.GetBooksInRange(_parser, _books).Count().Should().Be(5, "Chapter Count");
-            data.GetChapterCountInRange(_parser, _books).Should().Be(50 + 40 + 27 + 36 + 34);
-        }
-
-        [Fact]
-        public void CanAddReadingListsByBookStringAndCurrentString()
-        {
-            var data = new BibleReaderBookMarkData(range: "Psalm", current: "Psalm 44");
-            data.GetBooksInRange(_parser, _books).Count().Should().Be(1);
-        }
-
-        [Fact]
         public void CanAddReadingListsByRange()
         {
             var counts = new List<int>();
             var bookMarks = new BibleReaderBookMarksData();
 
-            var data = new BibleReaderBookMarkData(firstBookname: "Gen", lastBookname: "Deut",
+            var processor = new BibleReaderBookMarkProcessor(_parser, _books);
+            var bookMark = new BibleReaderBookMarkData(firstBookname: "Gen", lastBookname: "Deut",
                 currentBookname: "Ex", currentChapterNumber: 7);
-            var count = data.GetBooksInRange(_parser, _books).Count();
+            var count = processor.GetBooksInRange(bookMark).Count();
             count.Should().Be(5, "Gen-Deut");
             counts.Add(count);
-            data.GetChapterCountInRange(_parser, _books).Should().Be(187, "Gen-Deut Total Chapters");
-            bookMarks = bookMarks.AddBookMark(data);
+            processor.GetChapterCountInRange(bookMark).Should().Be(187, "Gen-Deut Total Chapters");
+            bookMarks = bookMarks.AddBookMark(bookMark);
 
-            data = new BibleReaderBookMarkData(firstBookname: "Joshua", lastBookname: "2 Chron",
+            bookMark = new BibleReaderBookMarkData(firstBookname: "Joshua", lastBookname: "2 Chron",
                 currentBookname: "Judges", currentChapterNumber: 19);
-            count = data.GetBooksInRange(_parser, _books).Count();
+            count = processor.GetBooksInRange(bookMark).Count();
             count.Should().Be(9, "Joshua-2 Chron");
             counts.Add(count);
-            bookMarks = bookMarks.AddBookMark(data);
+            bookMarks = bookMarks.AddBookMark(bookMark);
 
-            data = new BibleReaderBookMarkData("Ezra", "Job", "Job", 42);
-            count = data.GetBooksInRange(_parser, _books).Count();
+            bookMark = new BibleReaderBookMarkData("Ezra", "Job", "Job", 42);
+            count = processor.GetBooksInRange(bookMark).Count();
             count.Should().Be(4, "Ezra-Job");
             counts.Add(count);
-            bookMarks = bookMarks.AddBookMark(data);
+            bookMarks = bookMarks.AddBookMark(bookMark);
 
-            data = new BibleReaderBookMarkData("Psalm", 44);
-            count = data.GetBooksInRange(_parser, _books).Count();
+            bookMark = new BibleReaderBookMarkData("Psalm", 44);
+            count = processor.GetBooksInRange(bookMark).Count();
             count.Should().Be(1, "Psalm");
             counts.Add(count);
-            bookMarks = bookMarks.AddBookMark(data);
+            bookMarks = bookMarks.AddBookMark(bookMark);
 
-            data = new BibleReaderBookMarkData("Prov", "Song", "Prov", 22);
-            count = data.GetBooksInRange(_parser, _books).Count();
+            bookMark = new BibleReaderBookMarkData("Prov", "Song", "Prov", 22);
+            count = processor.GetBooksInRange(bookMark).Count();
             count.Should().Be(3, "Prov-Song");
             counts.Add(count);
-            bookMarks = bookMarks.AddBookMark(data);
+            bookMarks = bookMarks.AddBookMark(bookMark);
 
-            data = new BibleReaderBookMarkData("Isaiah", "Daniel", "Jer", 6);
-            count = data.GetBooksInRange(_parser, _books).Count();
+            bookMark = new BibleReaderBookMarkData("Isaiah", "Daniel", "Jer", 6);
+            count = processor.GetBooksInRange(bookMark).Count();
             count.Should().Be(5, "Isaiah-Daniel");
             counts.Add(count);
-            bookMarks = bookMarks.AddBookMark(data);
+            bookMarks = bookMarks.AddBookMark(bookMark);
 
-            data = new BibleReaderBookMarkData("Hosea", "Malachi", "Jon", 2);
-            count = data.GetBooksInRange(_parser, _books).Count();
+            bookMark = new BibleReaderBookMarkData("Hosea", "Malachi", "Jon", 2);
+            count = processor.GetBooksInRange(bookMark).Count();
             count.Should().Be(12, "Hosea-Malachi");
             counts.Add(count);
-            bookMarks = bookMarks.AddBookMark(data);
+            bookMarks = bookMarks.AddBookMark(bookMark);
 
-            data = new BibleReaderBookMarkData("Matt", "John", "Matt", 4);
-            count = data.GetBooksInRange(_parser, _books).Count();
+            bookMark = new BibleReaderBookMarkData("Matt", "John", "Matt", 4);
+            count = processor.GetBooksInRange(bookMark).Count();
             count.Should().Be(4, "Matt-John");
             counts.Add(count);
-            bookMarks = bookMarks.AddBookMark(data);
+            bookMarks = bookMarks.AddBookMark(bookMark);
 
-            data = new BibleReaderBookMarkData("Acts", "2 Cor", "1 Cor", 5);
-            count = data.GetBooksInRange(_parser, _books).Count();
+            bookMark = new BibleReaderBookMarkData("Acts", "2 Cor", "1 Cor", 5);
+            count = processor.GetBooksInRange(bookMark).Count();
             count.Should().Be(4, "Acts-2 Cor");
             counts.Add(count);
-            bookMarks = bookMarks.AddBookMark(data);
+            bookMarks = bookMarks.AddBookMark(bookMark);
 
-            data = new BibleReaderBookMarkData("Gal", "Rev", "2 Tim", 3);
-            count = data.GetBooksInRange(_parser, _books).Count();
+            bookMark = new BibleReaderBookMarkData("Gal", "Rev", "2 Tim", 3);
+            count = processor.GetBooksInRange(bookMark).Count();
             count.Should().Be(19, "Gal-Rev");
             counts.Add(count);
-            bookMarks = bookMarks.AddBookMark(data);
+            bookMarks = bookMarks.AddBookMark(bookMark);
 
             counts.Sum().Should().Be(66);
 

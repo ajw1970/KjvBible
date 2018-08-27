@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BibleReader.cs" />
     <Compile Include="BibleReaderBookMarkData.cs" />
+    <Compile Include="BibleReaderBookMarkProcessor.cs" />
     <Compile Include="BibleReaderBookMarksData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

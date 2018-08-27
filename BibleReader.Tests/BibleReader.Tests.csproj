@@ -94,6 +94,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="BibleReaderBookMarkProcessorTests.cs" />
     <Compile Include="BibleReaderInterractionTests.cs" />
     <Compile Include="BibleReaderConfigurationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

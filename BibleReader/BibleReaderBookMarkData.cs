@@ -38,35 +38,5 @@ namespace BibleStudy
             Range = bookName;
             Current = $"{bookName} {chapterNumber}";
         }
-
-        public IEnumerable<BookData> GetBooksInRange(IBibleReferenceParser parser, IEnumerable<BookData> books)
-        {
-            var booksInRange = new List<BookData>();
-
-            var range = parser.ParseBookRange(Range);
-
-            var firstBook = books.FirstOrDefault(b => b.Name.StartsWith(range.First, StringComparison.CurrentCultureIgnoreCase) || 
-                                             b.AbbreviatedName.StartsWith(range.First, StringComparison.CurrentCultureIgnoreCase));
-
-            if (firstBook == null) return booksInRange;
-            if (string.IsNullOrEmpty(range.Last)) return new BookData[] { firstBook };
-
-            var lastBook = books.FirstOrDefault(b => b.Name.StartsWith(range.Last, StringComparison.CurrentCultureIgnoreCase) ||
-                                                      b.AbbreviatedName.StartsWith(range.Last, StringComparison.CurrentCultureIgnoreCase));
-
-            if (lastBook == null) return booksInRange;
-
-            return books.Where(b => b.Id >= firstBook.Id && b.Id <= lastBook.Id);
-        }
-
-        public int GetChapterCountInRange(IBibleReferenceParser parser, IEnumerable<BookData> books)
-        {
-            return GetBooksInRange(parser, books).Sum(b => b.ChapterCount);
-        }
-
-        public int GetVerseCountInRange(IBibleReferenceParser parser, IEnumerable<BookData> books)
-        {
-            return GetBooksInRange(parser, books).Sum(b => b.VerseCount);
-        }
     }
 }
