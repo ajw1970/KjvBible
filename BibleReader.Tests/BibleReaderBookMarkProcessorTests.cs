@@ -54,12 +54,30 @@ namespace BibleStudy.Tests
 
             bookMark = processor.AdvanceToNextChapter(bookMark);
             bookMark.Current.Should().Be("2 John 1", "Next Book");
-
+            
             bookMark = processor.AdvanceToNextChapter(bookMark);
             bookMark.Current.Should().Be("3 John 1", "Next Book Again");
 
             bookMark = processor.AdvanceToNextChapter(bookMark);
             bookMark.Current.Should().Be("1 John 1", "Should Wrap back around");
+        }
+
+        [Fact]
+        public void AdvanceToNextBookMark()
+        {
+            var bookMarks = new BibleReaderBookMarksData("Gen-Deut", new List<BibleReaderBookMarkData>()
+            {
+                new BibleReaderBookMarkData("Gen-Deut", "Gen 1"),
+                new BibleReaderBookMarkData("Psalm", "Psalm 1")
+            });
+
+            var processor = new BibleReaderBookMarkProcessor(_parser, _books);
+
+            bookMarks = processor.AdvanceToNextBookMark(bookMarks);
+            bookMarks.CurrentBookMark.Should().Be("Psalm", "First Time");
+
+            bookMarks = processor.AdvanceToNextBookMark(bookMarks);
+            bookMarks.CurrentBookMark.Should().Be("Gen-Deut", "Second Time");
         }
 
         private readonly List<BookData> _books;

@@ -71,5 +71,18 @@ namespace BibleStudy
 
         private readonly IBibleReferenceParser _parser;
         private readonly IEnumerable<BookData> _books;
+
+        public BibleReaderBookMarksData AdvanceToNextBookMark(BibleReaderBookMarksData bookMarksData)
+        {
+            var bookMarks = bookMarksData.BookMarks.ToList();
+            var currentBookMark = bookMarks.First(bm =>
+                bm.Range.Equals(bookMarksData.CurrentBookMark, StringComparison.CurrentCultureIgnoreCase));
+            var index = bookMarks.IndexOf(currentBookMark);
+            if (bookMarks.Count > ++index)
+            {
+                return new BibleReaderBookMarksData(bookMarks[index].Range, bookMarks);
+            }
+            return new BibleReaderBookMarksData(bookMarks.First().Range,bookMarks);
+        }
     }
 }
