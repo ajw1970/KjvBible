@@ -10,13 +10,13 @@ namespace BibleStudy
 {
     public class BibleReaderBookMarkData
     {
-        public string Range { get; }
-        public string Current { get; }
+        public string Name { get; }
+        public string Position { get; }
 
-        public BibleReaderBookMarkData(string range, string current)
+        public BibleReaderBookMarkData(string name, string position)
         {
-            Range = range;
-            Current = current;
+            Name = name;
+            Position = position;
         }
 
         public BibleReaderBookMarkData(string firstBookname, string lastBookname, string currentBookname, int currentChapterNumber)
@@ -26,8 +26,8 @@ namespace BibleStudy
             if (string.IsNullOrEmpty(currentBookname)) throw new ArgumentException(nameof(currentBookname));
             if (currentChapterNumber <= 0) throw new ArgumentException(nameof(currentChapterNumber));
 
-            Range = $"{firstBookname}-{lastBookname}";
-            Current = $"{currentBookname} {currentChapterNumber}";
+            Name = $"{firstBookname}-{lastBookname}";
+            Position = $"{currentBookname} {currentChapterNumber}";
         }
 
         public BibleReaderBookMarkData(string bookName, int chapterNumber)
@@ -35,8 +35,8 @@ namespace BibleStudy
             if (string.IsNullOrEmpty(bookName)) throw new ArgumentException(nameof(bookName));
             if (chapterNumber <= 0) throw new ArgumentException(nameof(chapterNumber));
 
-            Range = bookName;
-            Current = $"{bookName} {chapterNumber}";
+            Name = bookName;
+            Position = $"{bookName} {chapterNumber}";
         }
     }
 }

@@ -21,7 +21,7 @@ namespace BibleStudy
         {
             var booksInRange = new List<BookData>();
 
-            var range = _parser.ParseBookRange(bookMark.Range);
+            var range = _parser.ParseBookRange(bookMark.Name);
 
             var firstBook = _books.FirstOrDefault(b => b.Name.StartsWith(range.First, StringComparison.CurrentCultureIgnoreCase) ||
                                                       b.AbbreviatedName.StartsWith(range.First, StringComparison.CurrentCultureIgnoreCase));
@@ -49,18 +49,34 @@ namespace BibleStudy
 
         public BibleReaderBookMarkData AdvanceToNextChapter(BibleReaderBookMarkData bookMark)
         {
-            var current = _parser.ParseChapter(bookMark.Current);
+            var current = _parser.ParseChapter(bookMark.Position);
             var currentBook = GetBook(current.Book);
             if (currentBook == null) throw new ApplicationException("Unable to find book: " + current.Book);
             if (current.Chapter < currentBook.ChapterCount)
             {
                 //we can just go to the next verse in the current book
-                return new BibleReaderBookMarkData(bookMark.Range, $"{current.Book} {current.Chapter + 1}");
+                return new BibleReaderBookMarkData(bookMark.Name, $"{current.Book} {current.Chapter + 1}");
             }
 
             var booksInRange = GetBooksInRange(bookMark);
             var nextBook = booksInRange.FirstOrDefault(b => b.Id > currentBook.Id) ?? booksInRange.First();
-            return new BibleReaderBookMarkData(bookMark.Range, $"{nextBook.Name} {1}");
+            return new BibleReaderBookMarkData(bookMark.Name, $"{nextBook.Name} {1}");
+        }
+
+        public BibleReaderBookMarksData AdvanceToNext(BibleReaderBookMarksData bookMarksData)
+        {
+            var bookMarks = bookMarksData.BookMarks.ToList();
+            var currentBookMark = bookMarks.First(bm =>
+                bm.Name.Equals(bookMarksData.CurrentName, StringComparison.CurrentCultureIgnoreCase));
+
+            var index = bookMarks.IndexOf(currentBookMark);
+            bookMarks[index] = AdvanceToNextChapter(currentBookMark);
+
+            if (bookMarks.Count > ++index)
+            {
+                return new BibleReaderBookMarksData(bookMarks[index].Name, bookMarks);
+            }
+            return new BibleReaderBookMarksData(bookMarks.First().Name,bookMarks);
         }
 
         private BookData GetBook(string name)
@@ -69,20 +85,7 @@ namespace BibleStudy
                                        b.AbbreviatedName.StartsWith(name, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        private readonly IBibleReferenceParser _parser;
         private readonly IEnumerable<BookData> _books;
-
-        public BibleReaderBookMarksData AdvanceToNextBookMark(BibleReaderBookMarksData bookMarksData)
-        {
-            var bookMarks = bookMarksData.BookMarks.ToList();
-            var currentBookMark = bookMarks.First(bm =>
-                bm.Range.Equals(bookMarksData.CurrentBookMark, StringComparison.CurrentCultureIgnoreCase));
-            var index = bookMarks.IndexOf(currentBookMark);
-            if (bookMarks.Count > ++index)
-            {
-                return new BibleReaderBookMarksData(bookMarks[index].Range, bookMarks);
-            }
-            return new BibleReaderBookMarksData(bookMarks.First().Range,bookMarks);
-        }
+        private readonly IBibleReferenceParser _parser;
     }
 }

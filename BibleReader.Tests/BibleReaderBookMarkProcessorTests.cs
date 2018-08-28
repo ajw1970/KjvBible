@@ -27,7 +27,7 @@ namespace BibleStudy.Tests
         [Fact]
         public void CanAddReadingListsByRangeStringAndCurrentString()
         {
-            var bookMark = new BibleReaderBookMarkData(range: "Gen-Deut", current: "Ex 7");
+            var bookMark = new BibleReaderBookMarkData(name: "Gen-Deut", position: "Ex 7");
 
             var processor = new BibleReaderBookMarkProcessor(_parser, _books);
             processor.GetBooksInRange(bookMark).Count().Should().Be(5, "Chapter Count");
@@ -37,7 +37,7 @@ namespace BibleStudy.Tests
         [Fact]
         public void CanAddReadingListsByBookStringAndCurrentString()
         {
-            var bookMark = new BibleReaderBookMarkData(range: "Psalm", current: "Psalm 44");
+            var bookMark = new BibleReaderBookMarkData(name: "Psalm", position: "Psalm 44");
 
             var processor = new BibleReaderBookMarkProcessor(_parser, _books);
             processor.GetBooksInRange(bookMark).Count().Should().Be(1);
@@ -50,22 +50,22 @@ namespace BibleStudy.Tests
 
             var processor = new BibleReaderBookMarkProcessor(_parser, _books);
             bookMark = processor.AdvanceToNextChapter(bookMark);
-            bookMark.Current.Should().Be("1 John 5", "Another Chapter");
+            bookMark.Position.Should().Be("1 John 5", "Another Chapter");
 
             bookMark = processor.AdvanceToNextChapter(bookMark);
-            bookMark.Current.Should().Be("2 John 1", "Next Book");
+            bookMark.Position.Should().Be("2 John 1", "Next Book");
             
             bookMark = processor.AdvanceToNextChapter(bookMark);
-            bookMark.Current.Should().Be("3 John 1", "Next Book Again");
+            bookMark.Position.Should().Be("3 John 1", "Next Book Again");
 
             bookMark = processor.AdvanceToNextChapter(bookMark);
-            bookMark.Current.Should().Be("1 John 1", "Should Wrap back around");
+            bookMark.Position.Should().Be("1 John 1", "Should Wrap back around");
         }
 
         [Fact]
-        public void AdvanceToNextBookMark()
+        public void AdvanceToNext()
         {
-            var bookMarks = new BibleReaderBookMarksData("Gen-Deut", new List<BibleReaderBookMarkData>()
+            var bookMarksData = new BibleReaderBookMarksData("Gen-Deut", new List<BibleReaderBookMarkData>()
             {
                 new BibleReaderBookMarkData("Gen-Deut", "Gen 1"),
                 new BibleReaderBookMarkData("Psalm", "Psalm 1")
@@ -73,11 +73,13 @@ namespace BibleStudy.Tests
 
             var processor = new BibleReaderBookMarkProcessor(_parser, _books);
 
-            bookMarks = processor.AdvanceToNextBookMark(bookMarks);
-            bookMarks.CurrentBookMark.Should().Be("Psalm", "First Time");
+            bookMarksData = processor.AdvanceToNext(bookMarksData);
+            bookMarksData.BookMarks.First(bm => bm.Name.Equals("Gen-Deut")).Position.Should().Be("Gen 2", "Bumped on First Time");
+            bookMarksData.CurrentName.Should().Be("Psalm", "First Time");
 
-            bookMarks = processor.AdvanceToNextBookMark(bookMarks);
-            bookMarks.CurrentBookMark.Should().Be("Gen-Deut", "Second Time");
+            bookMarksData = processor.AdvanceToNext(bookMarksData);
+            bookMarksData.BookMarks.First(bm => bm.Name.Equals("Psalm")).Position.Should().Be("Psalm 2", "Bumped on Second Time");
+            bookMarksData.CurrentName.Should().Be("Gen-Deut", "Second Time");
         }
 
         private readonly List<BookData> _books;

@@ -5,12 +5,12 @@ namespace BibleStudy
 {
     public class BibleReaderBookMarksData
     {
-        public string CurrentBookMark { get; }
+        public string CurrentName { get; }
         public IEnumerable<BibleReaderBookMarkData> BookMarks { get; }
 
         public BibleReaderBookMarksData()
         {
-            CurrentBookMark = null;
+            CurrentName = null;
             BookMarks = new List<BibleReaderBookMarkData>();
         }
 
@@ -20,12 +20,12 @@ namespace BibleStudy
             {
                 new BibleReaderBookMarkData(range, current)
             };
-            CurrentBookMark = range;
+            CurrentName = range;
         }
 
-        public BibleReaderBookMarksData(string currentBookMark, IEnumerable<BibleReaderBookMarkData> bookMarks)
+        public BibleReaderBookMarksData(string currentName, IEnumerable<BibleReaderBookMarkData> bookMarks)
         {
-            CurrentBookMark = currentBookMark;
+            CurrentName = currentName;
             BookMarks = bookMarks;
         }
 
@@ -37,14 +37,14 @@ namespace BibleStudy
             var bookMarks = BookMarks.ToList();
             bookMarks.Add(new BibleReaderBookMarkData(name, position));
 
-            var currentBookMark = CurrentBookMark ?? name;
+            var currentBookMark = CurrentName ?? name;
             
             return new BibleReaderBookMarksData(currentBookMark, bookMarks);
         }
 
         public BibleReaderBookMarksData AddBookMark(BibleReaderBookMarkData bookMark)
         {
-            return bookMark == null ? this : AddBookMark(bookMark.Range, bookMark.Current);
+            return bookMark == null ? this : AddBookMark(bookMark.Name, bookMark.Position);
         }
 
         public BibleReaderBookMarksData AddBookMark(string bookName, int currentChapter)

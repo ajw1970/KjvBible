@@ -27,7 +27,7 @@ namespace BibleStudy
 
             for (int i = 0; i < _data.Lists.Count; i++)
             {
-                if (_data.Lists[i].Name.Equals(bookMarksData.CurrentBookMark))
+                if (_data.Lists[i].Name.Equals(bookMarksData.CurrentName))
                 {
                     SetCurrentListIndex(i);
                     break;
@@ -155,8 +155,8 @@ namespace BibleStudy
         {
             var parser = new BibleReferenceParser();
 
-            var bookRange = parser.ParseBookRange(bookMark.Range); ;
-            var currentChapter = parser.ParseChapter(bookMark.Current);
+            var bookRange = parser.ParseBookRange(bookMark.Name); ;
+            var currentChapter = parser.ParseChapter(bookMark.Position);
 
             if (bookRange.Last == string.Empty && bookRange.First == currentChapter.Book)
             {
