@@ -55,12 +55,20 @@ namespace BibleStudy
             if (current.Chapter < currentBook.ChapterCount)
             {
                 //we can just go to the next verse in the current book
-                return new BibleReaderBookMarkData(bookMark.Name, $"{current.Book} {current.Chapter + 1}");
+                return new BibleReaderBookMarkData()
+                {
+                    Name = bookMark.Name,
+                    Position = $"{current.Book} {current.Chapter + 1}"
+                };
             }
 
             var booksInRange = GetBooksInRange(bookMark);
             var nextBook = booksInRange.FirstOrDefault(b => b.Id > currentBook.Id) ?? booksInRange.First();
-            return new BibleReaderBookMarkData(bookMark.Name, $"{nextBook.Name} {1}");
+            return new BibleReaderBookMarkData()
+            {
+                Name = bookMark.Name,
+                Position = $"{nextBook.Name} {1}"
+            };
         }
 
         public BibleReaderBookMarksData AdvanceToNext(BibleReaderBookMarksData bookMarksData)
@@ -74,9 +82,17 @@ namespace BibleStudy
 
             if (bookMarks.Count > ++index)
             {
-                return new BibleReaderBookMarksData(bookMarks[index].Name, bookMarks);
+                return new BibleReaderBookMarksData()
+                {
+                    CurrentName = bookMarks[index].Name,
+                    BookMarks = bookMarks
+                };
             }
-            return new BibleReaderBookMarksData(bookMarks.First().Name,bookMarks);
+
+            return new BibleReaderBookMarksData() {
+                CurrentName = bookMarks.First().Name,
+                BookMarks = bookMarks
+            };
         }
 
         private BookData GetBook(string name)
@@ -87,5 +103,10 @@ namespace BibleStudy
 
         private readonly IEnumerable<BookData> _books;
         private readonly IBibleReferenceParser _parser;
+
+        public string GetCurrentPosition(BibleReaderBookMarksData bookMarksData)
+        {
+            return bookMarksData.BookMarks.First(b => b.Name.Equals(bookMarksData.CurrentName)).Position;
+        }
     }
 }

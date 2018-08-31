@@ -34,6 +34,27 @@ namespace BibleStudy.Tests
             reader.CurrentChapterHeader.ToString().Should().Be("1 Samuel 25");
         }
 
+        [Fact]
+        public void CanSerializeAndDeserialize()
+        {
+            var data = new BibleReaderBookMarksData()
+            {
+                CurrentName = "Gen-Deut",
+                BookMarks = new List<BibleReaderBookMarkData>()
+                {
+                    new BibleReaderBookMarkData()
+                    {
+                        Name = "Gen-Deut",
+                        Position = "Gen 1"
+                    }
+                }
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var deserialized = JsonConvert.DeserializeObject<BibleReaderBookMarksData>(json);
+            deserialized.CurrentName.Should().Be("Gen-Deut");
+        }
+
         private BibleReader TestReader
         {
             get

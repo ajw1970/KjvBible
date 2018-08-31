@@ -79,7 +79,11 @@ namespace BibleStudy
 
         public List<BookData> AddReadingList(string books, string current)
         {
-            var bookMark = new BibleReaderBookMarkData(books, current);
+            var bookMark = new BibleReaderBookMarkData()
+            {
+                Name = books,
+                Position = current
+            };
 
             var list = AddReadingList(bookMark);
 

@@ -27,7 +27,11 @@ namespace BibleStudy.Tests
         [Fact]
         public void CanAddReadingListsByRangeStringAndCurrentString()
         {
-            var bookMark = new BibleReaderBookMarkData(name: "Gen-Deut", position: "Ex 7");
+            var bookMark = new BibleReaderBookMarkData()
+            {
+                Name = "Gen-Deut",
+                Position = "Ex 7"
+            };
 
             var processor = new BibleReaderBookMarkProcessor(_parser, _books);
             processor.GetBooksInRange(bookMark).Count().Should().Be(5, "Chapter Count");
@@ -37,7 +41,7 @@ namespace BibleStudy.Tests
         [Fact]
         public void CanAddReadingListsByBookStringAndCurrentString()
         {
-            var bookMark = new BibleReaderBookMarkData(name: "Psalm", position: "Psalm 44");
+            var bookMark = new BibleReaderBookMarkData() { Name = "Psalm", Position = "Psalm 44" };
 
             var processor = new BibleReaderBookMarkProcessor(_parser, _books);
             processor.GetBooksInRange(bookMark).Count().Should().Be(1);
@@ -46,7 +50,7 @@ namespace BibleStudy.Tests
         [Fact]
         public void CanAdvanceToNextChapter()
         {
-            var bookMark = new BibleReaderBookMarkData("1 John-3 John","1 John 4");
+            var bookMark = new BibleReaderBookMarkData() { Name = "1 John-3 John", Position = "1 John 4" };
 
             var processor = new BibleReaderBookMarkProcessor(_parser, _books);
             bookMark = processor.AdvanceToNextChapter(bookMark);
@@ -54,7 +58,7 @@ namespace BibleStudy.Tests
 
             bookMark = processor.AdvanceToNextChapter(bookMark);
             bookMark.Position.Should().Be("2 John 1", "Next Book");
-            
+
             bookMark = processor.AdvanceToNextChapter(bookMark);
             bookMark.Position.Should().Be("3 John 1", "Next Book Again");
 
@@ -65,11 +69,15 @@ namespace BibleStudy.Tests
         [Fact]
         public void AdvanceToNext()
         {
-            var bookMarksData = new BibleReaderBookMarksData("Gen-Deut", new List<BibleReaderBookMarkData>()
+            var bookMarksData = new BibleReaderBookMarksData()
             {
-                new BibleReaderBookMarkData("Gen-Deut", "Gen 1"),
-                new BibleReaderBookMarkData("Psalm", "Psalm 1")
-            });
+                CurrentName = "Gen-Deut",
+                BookMarks = new List<BibleReaderBookMarkData>()
+                {
+                    new BibleReaderBookMarkData() {Name = "Gen-Deut",  Position = "Gen 1"},
+                    new BibleReaderBookMarkData() {Name = "Psalm",  Position = "Psalm 1"}
+                }
+            };
 
             var processor = new BibleReaderBookMarkProcessor(_parser, _books);
 
@@ -80,6 +88,24 @@ namespace BibleStudy.Tests
             bookMarksData = processor.AdvanceToNext(bookMarksData);
             bookMarksData.BookMarks.First(bm => bm.Name.Equals("Psalm")).Position.Should().Be("Psalm 2", "Bumped on Second Time");
             bookMarksData.CurrentName.Should().Be("Gen-Deut", "Second Time");
+        }
+
+        [Fact]
+        public void GetCurrentPosition()
+        {
+            var bookMarksData = new BibleReaderBookMarksData()
+            {
+                CurrentName = "Gen-Deut",
+                BookMarks = new List<BibleReaderBookMarkData>()
+                {
+                    new BibleReaderBookMarkData() { Name = "Gen-Deut", Position = "Gen 1"},
+                    new BibleReaderBookMarkData() {Name = "Psalm", Position = "Psalm 1"}
+                }
+            };
+
+            var processor = new BibleReaderBookMarkProcessor(_parser, _books);
+            var currentPosition = processor.GetCurrentPosition(bookMarksData);
+            currentPosition.Should().Be("Gen 1");
         }
 
         private readonly List<BookData> _books;
