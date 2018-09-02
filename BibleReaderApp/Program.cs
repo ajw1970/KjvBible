@@ -13,17 +13,11 @@ namespace BibleReaderApp
 {
     class Program
     {
+        private static string dataFileName = @"C:\Users\ajw19\Documents\Bible Study\Bookmarks.json";
+
         static void Main(string[] args)
         {
-            string json;
-            using (var reader = new StreamReader(@"C:\Users\ajw19\Documents\Bible Study\Bookmarks.json"))
-            {
-                json = reader.ReadToEnd();
-            }
-
-            var bookMarksData = JsonConvert.DeserializeObject<BibleReaderBookMarksData>(json);
-
-            json = JsonConvert.SerializeObject(bookMarksData);
+            var bookMarksData = GetData();
 
             var parser = new BibleReferenceParser();
             IEnumerable<BookData> books;
@@ -37,7 +31,7 @@ namespace BibleReaderApp
 
             var currentPosition = processor.GetCurrentPosition(bookMarksData);
 
-            Console.WriteLine(currentPosition);
+            DisplayCurrentAndPromptForLaunch(currentPosition);
 
             while (true)
             {
@@ -49,9 +43,54 @@ namespace BibleReaderApp
                     case "N":
                         bookMarksData = processor.AdvanceToNext(bookMarksData);
                         currentPosition = processor.GetCurrentPosition(bookMarksData);
-                        Console.WriteLine(currentPosition);
+                        SaveData(bookMarksData);
+                        Console.WriteLine();
+
+                        DisplayCurrentAndPromptForLaunch(currentPosition);
+
                         break;
                 }
+            }
+        }
+
+        private static void DisplayCurrentAndPromptForLaunch(string currentPosition)
+        {
+            Console.WriteLine($"Currently at: {currentPosition}");
+            Console.Write("Launch in browser? ");
+
+            var response = Console.ReadKey();
+            if (response.Key.ToString().Equals("Y"))
+            {
+                var currentPositionArg = currentPosition.Replace(' ', '+');
+                var process = new System.Diagnostics.Process();
+                process.StartInfo.FileName = $"https://www.biblegateway.com/passage/?search={currentPositionArg}&version=KJV";
+                process.Start();
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.Write("Press N to move to next bookmark: ");
+        }
+
+        private static BibleReaderBookMarksData GetData()
+        {
+            string json;
+
+            using (var reader = new StreamReader(dataFileName))
+            {
+                json = reader.ReadToEnd();
+            }
+
+            return JsonConvert.DeserializeObject<BibleReaderBookMarksData>(json);
+        }
+
+        private  static void SaveData(BibleReaderBookMarksData data)
+        {
+            using (var writer = new StreamWriter(dataFileName))
+            {
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                writer.Write(json);
             }
         }
     }
