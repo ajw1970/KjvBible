@@ -30,3 +30,6 @@ _ReSharper*/
 Storage.ide
 /.vs/BibleReader/v15/Server/sqlite3
 .vs/
+
+#Nuget Packages
+Packages/
