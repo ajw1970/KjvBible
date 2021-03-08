@@ -13,7 +13,7 @@ namespace BibleReaderApp
 {
     class Program
     {
-        private static string dataFileName = @"C:\Users\ajw19\Documents\Bible Study\Bookmarks.json";
+        private static string dataFileName = @"C:\Users\ajw19\OneDrive - Welty Automation\Documents\Bible Study\Bookmarks.json";
 
         static void Main(string[] args)
         {
