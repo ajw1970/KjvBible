@@ -33,3 +33,5 @@ Storage.ide
 
 #Nuget Packages
 Packages/
+
+.idea/
