@@ -25,7 +25,9 @@ namespace ScriptureReferenceParser
 
         public (string Book, int Chapter) ParseChapter(string chapterReference)
         {
-            var splitChapter = chapterReference
+            var chapterReferenceBeforeColon = chapterReference.Split(':')[0];
+
+            var splitChapter = chapterReferenceBeforeColon
                 .Trim()
                 .Split(' ');
 

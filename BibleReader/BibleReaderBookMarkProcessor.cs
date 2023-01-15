@@ -52,13 +52,14 @@ namespace BibleStudy
             var current = _parser.ParseChapter(bookMark.Position);
             var currentBook = GetBook(current.Book);
             if (currentBook == null) throw new ApplicationException("Unable to find book: " + current.Book);
+            var currentChapterVerseCount = currentBook.ChapterVerseCounts[current.Chapter - 1];
             if (current.Chapter < currentBook.ChapterCount)
             {
                 //we can just go to the next verse in the current book
                 return new BibleReaderBookMarkData()
                 {
                     Name = bookMark.Name,
-                    Position = $"{current.Book} {current.Chapter + 1}"
+                    Position = $"{current.Book} {current.Chapter + 1}:1-{currentChapterVerseCount}"
                 };
             }
 
@@ -67,7 +68,7 @@ namespace BibleStudy
             return new BibleReaderBookMarkData()
             {
                 Name = bookMark.Name,
-                Position = $"{nextBook.Name} {1}"
+                Position = $"{nextBook.Name} {1}:1-{currentChapterVerseCount}"
             };
         }
 
