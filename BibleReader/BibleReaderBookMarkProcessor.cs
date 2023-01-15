@@ -44,7 +44,7 @@ namespace BibleStudy
 
         public int GetVerseCountInRange(BibleReaderBookMarkData bookMark)
         {
-            return GetBooksInRange(bookMark).Sum(b => b.VerseCount);
+            return GetBooksInRange(bookMark).Sum(b => b.BookVerseCount);
         }
 
         public BibleReaderBookMarkData AdvanceToNextChapter(BibleReaderBookMarkData bookMark)
@@ -106,7 +106,9 @@ namespace BibleStudy
 
         public string GetCurrentPosition(BibleReaderBookMarksData bookMarksData)
         {
-            return bookMarksData.BookMarks.First(b => b.Name.Equals(bookMarksData.CurrentName)).Position;
+            var currentBookMark = bookMarksData.BookMarks.First(b => b.Name.Equals(bookMarksData.CurrentName));
+            var currentPositionBookAndChapter = currentBookMark.Position;
+            return currentPositionBookAndChapter;
         }
     }
 }
