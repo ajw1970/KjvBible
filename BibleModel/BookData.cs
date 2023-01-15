@@ -7,5 +7,6 @@
         public string AbbreviatedName { get; set; }
         public int ChapterCount { get; set; }
         public int VerseCount { get; set; }
+        public List<int> ChapterVerseCounts { get; set; }
     }
 }
