@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BibleModel;
 using BibleStudy;
 using Newtonsoft.Json;
@@ -28,6 +29,34 @@ namespace BibleReaderApp
 
             var currentPosition = processor.GetCurrentPosition(bookMarksData);
 
+            //Handle integer argument to display next x number of bookmarks
+            if (args.Length == 1)
+            {
+                if (int.TryParse(args.First(), out int showCount) == false)
+                {
+                    Console.WriteLine($"Unexpected argument: {args.First()}");
+                    PromptForAnyKeyToClose();
+                    return;
+                };
+
+                Console.WriteLine($"Showing current + next {showCount} bookmarks:");
+                Console.WriteLine();
+
+                Console.WriteLine($"{currentPosition}");
+                for (int i = 0; i < showCount; i++)
+                {
+                    bookMarksData = processor.AdvanceToNext(bookMarksData);
+                    currentPosition = processor.GetCurrentPosition(bookMarksData);
+                    Console.WriteLine($"{currentPosition}");
+                }
+
+                PromptForAnyKeyToClose();
+
+                SaveData(bookMarksData);
+
+                return;
+            }
+
             DisplayCurrentAndPromptForLaunch(currentPosition);
 
             while (true)
@@ -48,6 +77,13 @@ namespace BibleReaderApp
                         break;
                 }
             }
+        }
+
+        private static void PromptForAnyKeyToClose()
+        {
+            Console.WriteLine();
+            Console.Write("Press any key to close");
+            Console.ReadKey();
         }
 
         private static void DisplayCurrentAndPromptForLaunch(string currentPosition)
